@@ -11,7 +11,7 @@ The are hard to understand, inconsistent and difficult to use.
 ### Divergent Change
 When one class is commonly changed in different ways for different reasons.
 ### Shotgun Surgery
-When every time you make a kind of change, you have to make a lot of little changes to a lot of different classes
+When every time you make a kind of change, you have to make a lot of little changes to a lot of different classes.
 ### Feature Envy
 A method that seems more interested in a class other than the one it actually is in.
 ### Data Clumps
@@ -25,7 +25,7 @@ Every time you make a subclass of one class, you also have to make a subclass of
 ### Lazy Class
 A class that isn't doing enough to pay for itself should be eliminated.
 ### Speculative Generality
-All sorts of hooks and special cases to handle things that aren't required
+All sorts of hooks and special cases to handle things that aren't required.
 ### Temporary Field
 An instance variable that is set only in certain circumstances.
 ### Message Chain
