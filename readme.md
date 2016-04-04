@@ -364,6 +364,22 @@ to
 	}
 
 ```
+
+**Motivation**
+
+* When a method has lot of local variables and applying decomposition is not possible
+
+**Mechanics**
+
+* Create a new class, name it after the method.
+*  Give the new class a final field for the object that hosted the original method (the source object) and a field for each temporary variable and each parameter in the method.
+* Give the new class a constructor that takes the source object and each parameter.
+* Give the new class a method named "compute."
+* Copy the body of the original method into compute. Use the source object field for any
+invocations of methods on the original object.
+* Compile.
+* Replace the old method with one that creates the new object and calls compute.
+
 _This sample does not really needs this refactoring, but shows the way to do it._
 ```java
 
@@ -412,20 +428,6 @@ to
 			return new Gamma(this, inputVal, quantity,yearToDate).compute();
 		}
 ```
-**Motivation**
-
-* When a method has lot of local variables and applying decomposition is not possible
-
-**Mechanics**
-
-* Create a new class, name it after the method.
-*  Give the new class a final field for the object that hosted the original method (the source object) and a field for each temporary variable and each parameter in the method.
-* Give the new class a constructor that takes the source object and each parameter.
-* Give the new class a method named "compute."
-* Copy the body of the original method into compute. Use the source object field for any
-invocations of methods on the original object.
-* Compile.
-* Replace the old method with one that creates the new object and calls compute.
 
 ##9 Substitute Algorithm
 You want to replace an algorithm with one that is clearer.
