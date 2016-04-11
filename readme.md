@@ -471,3 +471,395 @@ to
 
 * Prepare your alternative algorithm.
 * Run the new algorithm against your tests until it passes.
+
+#7 Moving features between elements
+
+##10 Move method
+A method is, or will be, using or used by more features of another class than the class on which it is defined.  
+
+_Create a new method with a similar body in the class it uses most. Either turn the old method into a simple delegation, or remove it altogether._  
+
+```java
+
+	class Class1 {
+		aMethod()
+	}
+
+	class Class2 {	}
+```
+to
+
+
+```java
+
+	class Class1 {	}
+
+	class Class2 {
+		aMethod()
+	}
+```
+
+**Motivation**
+When classes do to much work or when collaborate too much and are highly coupled
+
+**Mechanics**
+
+* Examine all features used by the source method that are defined ont he source class. Consider whether they also should be moved
+* Check the sub and super-classes for other declarations
+*  Declare the method in the target class
+* Copy the code to the target. Adapt it to work.
+* Compile
+* Determine how to reference the target from the source
+* Turn the source method to a delegating one
+* Compile and test
+* Decide to remove or keep as delegate the source method
+* If removed, replace all references to the target method
+* Compile and test
+
+#11 Move field 
+A field is, or will be, used by another class more than the class on which it is defined.
+_Create a new field in the target class, and change all its users._
+
+```java
+
+	class Class1 {
+		aField
+	}
+
+	class Class2 {	}
+```
+to
+
+
+```java
+
+	class Class1 {	}
+
+	class Class2 {
+		aField
+	}
+```
+
+**Motivation**
+If a field is used mostly by outer classes and before [12 Extract Class]() 
+
+**Mechanics**
+
+* If the field is public, use [X Encapsulate Field]()
+* Compile and test
+* Create a field in the target (with accessors)
+* Compile and test
+* Determine how to reference it from the source
+* Remove it on the source
+* Replace all references on the source with the ones on the target
+* Compile and test
+
+#12 Extract Class
+You have one class doing work that should be done by two.
+_Create a new class and move the relevant fields and methods from the old class into the new class._
+```java
+
+	class Person {
+		name,
+		officeAreaCode,
+		officeNumber,
+		getTelephoneNumber()
+	}
+```
+to
+```java
+
+	class Person {
+		name,
+		getTelephoneNumber()
+	}
+
+	class TelephoneNumber {
+		areaCode,
+		number,
+		getTelephoneNumber()
+	}
+```
+
+**Motivation**
+Classes grow.
+_Split them when_:
+
+* subsets of methods seem to be together
+* subsets of data usually change together or depend on each other
+
+**Mechanics**
+
+* Decide how to split the responsibilities of the class.
+* Create a new class to express the split-off responsibilities.
+* Make a link from the old to the new class.
+* Use [11 Move Field]() on each field you wish to move.
+* Compile and test.
+* Use [10 Move Method]() to move methods over from old to new. Start with lower-level methods.
+* Compile and test.
+* Review and reduce the interfaces of each class.
+* Decide whether to expose the new class. If you do expose the class, decide whether to expose it as a reference object or as an immutable value object.
+
+#13 Inline Class
+A class isn't doing very much.
+_Move all its features into another class and delete it._
+```java
+
+	class Person {
+		name,
+		getTelephoneNumber()
+	}
+
+	class TelephoneNumber {
+		areaCode,
+		number,
+		getTelephoneNumber()
+	}
+```
+to
+```java
+
+	class Person {
+		name,
+		officeAreaCode,
+		officeNumber,
+		getTelephoneNumber()
+	}
+```
+
+
+**Motivation**
+After refactoring normally there are a bunch of responsibilities moved out of the class, letting the class with little left.
+
+**Mechanics**
+
+* Declare the public protocol of the source class onto the absorbing class. Delegate all these methods to the source class.
+	* _If a separate interface makes sense for the source class methods, use Extract Interface before inlining._
+* Change all references from the source class to the absorbing class.
+* Compile and test.
+* Use [10 Move Method]() and [11 Move Field]() to move features from the source class to the absorbing class.
+* Hold a short, simple funeral service.
+
+#14 Hide Delegate
+A client is calling a delegate class of an object.  
+_Create methods on the server to hide the delegate._
+```java
+
+	class ClientClass {
+		//Dependencies
+		Person person = new Person() 
+		Department department = new Department()
+		person.doSomething()
+		department.doSomething()
+	}
+```
+to
+```java
+
+	class ClientClass {
+		Person person = new Person()
+		person.doSomething()
+	}
+
+	class Person{
+		Department department = new Department()
+		department.doSomething()
+	}
+```
+
+_The solution_
+``java
+
+	class ClientClass{
+		Server server = new Server()
+		server.doSomething()
+	}
+
+	class Server{
+		Delegate delegate = new Delegate()
+		void doSomething(){
+			delegate.doSomething()	
+		}
+	}
+	// The delegate is hidden to the client class.
+	// Changes won't be propagated to the client they will only affect the server
+	class Delegate{ 
+		void doSomething(){...}
+	}
+
+```
+
+**Motivation**
+Key of encapsulation. 
+Classes should know as less as possible of other classes.
+
+**Mechanics**
+
+* For each method on the delegate, create a simple delegating method on the server.
+* Adjust the client to call the server.
+	* If the client is not in the same package as the server, consider changing the delegate method's access to package visibility.
+* Compile and test
+* If no client needs to access the delegate anymore, remove the server's accessor for the delegate.
+* Compile and test.
+
+`> manager = john.getDepartment().getManager();`
+```java
+
+
+
+	class Person {
+		Department _department;
+		public Department getDepartment() {
+			return _department;
+		}
+		public void setDepartment(Department arg) {
+			_department = arg;
+			}
+		}
+
+	class Department {
+		private String _chargeCode;
+		private Person _manager;
+		public Department (Person manager) {
+			_manager = manager;
+		}
+		public Person getManager() {
+			return _manager;
+		}
+		...
+```
+to
+
+`> manager = john.getManager();`
+```java
+	
+	class Person {
+		...
+		public Person getManager() {
+			return _department.getManager();
+		}
+	}
+```
+
+#15 Remove Middle Man
+A class is doing too much simple delegation.
+_Get the client to call the delegate directly._
+```java
+
+	class ClientClass {
+		Person person = new Person()
+		person.doSomething()
+	}
+
+	class Person{
+		Department department = new Department()
+		department.doSomething()
+	}
+```
+to
+
+```java
+
+	class ClientClass {
+		//Dependencies
+		Person person = new Person() 
+		Department department = new Department()
+		person.doSomething()
+		department.doSomething()
+	}
+```
+
+
+**Motivation**
+When the "Middle man" (the server) does to much is time for the client to call the delegate directly.
+
+**Mechanics**
+
+* Create an accessor for the delegate.
+* For each client use of a delegate method, remove the method from the server and replace the call in the client to call method on the delegate.
+* Compile and test
+
+#16 Introduce Foreign Method
+A server class you are using needs an additional method, but you can't modify the class.  
+_Create a method in the client class with an instance of the server class as its first argument._
+
+```java
+	
+	Date newStart = new Date(previousEnd.getYear(),previousEnd.getMonth(),previousEnd.getDate()+1);
+```
+to
+```java
+	
+	Date newStart = nextDay(previousEnd);
+
+	private static Date nextDay(Date date){
+		return new Date(date.getYear(),date.getMonth(),date.getDate()+1);
+	}
+```
+
+**Motivation**
+When there is a lack of a method in class that you use a lot and you can not change that class.
+
+**Mechanics**
+
+* Create a method in the client class that does what you need.
+	* The method should not access any of the features of the client class. If it needs a value, send it in as a parameter.
+* Make an instance of the server class the first parameter.
+* Comment the method as "foreign method; should be in server."
+
+#17 Introduce Local Extension
+A server class you are using needs several additional methods, but you can't modify the class. 
+_Create a new class that contains these extra methods. Make this extension class a subclass or a wrapper of the original._
+```java
+
+	class ClientClass(){
+		
+		Date date = new Date()
+		nextDate = nextDay(date);
+
+		private static Date nextDay(Date date){
+			return new Date(date.getYear(),date.getMonth(),date.getDate()+1);
+		}
+	}
+```
+to
+```java
+	
+	class ClientClass() {
+		MfDate date = new MfDate()
+		nextDate = nextDate(date)
+	}
+	class MfDate() extends Date {
+		...
+		private static Date nextDay(Date date){
+			return new Date(date.getYear(),date.getMonth(),date.getDate()+1);
+		}
+	}
+```
+
+**Motivation**
+When plenty of [foreign methods]() need to be added to a class.
+**Mechanics**
+
+* Create an extension class either as a subclass or a wrapper of the original.
+* Add converting constructors to the extension.
+	* A constructor takes the original as an argument. 
+	* The subclass version calls an appropriate superclass constructor 
+	* The wrapper version sets the delegate field to the argument.
+* Add new features to the extension.
+* Replace the original with the extension where needed.
+* Move any foreign methods defined for this class onto the extension.
+
+#X 
+```java
+```
+
+to
+
+
+```java
+```
+
+**Motivation**
+
+**Mechanics**
