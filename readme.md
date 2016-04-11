@@ -500,6 +500,7 @@ to
 ```
 
 **Motivation**
+
 When classes do to much work or when collaborate too much and are highly coupled
 
 **Mechanics**
@@ -541,6 +542,7 @@ to
 ```
 
 **Motivation**
+
 If a field is used mostly by outer classes and before [12 Extract Class]() 
 
 **Mechanics**
@@ -582,6 +584,7 @@ to
 ```
 
 **Motivation**
+
 Classes grow.
 _Split them when_:
 
@@ -629,6 +632,7 @@ to
 
 
 **Motivation**
+
 After refactoring normally there are a bunch of responsibilities moved out of the class, letting the class with little left.
 
 **Mechanics**
@@ -690,6 +694,7 @@ _The solution_
 ```
 
 **Motivation**
+
 Key of encapsulation. 
 Classes should know as less as possible of other classes.
 
@@ -771,6 +776,7 @@ to
 
 
 **Motivation**
+
 When the "Middle man" (the server) does to much is time for the client to call the delegate directly.
 
 **Mechanics**
@@ -798,6 +804,7 @@ to
 ```
 
 **Motivation**
+
 When there is a lack of a method in class that you use a lot and you can not change that class.
 
 **Mechanics**
@@ -838,7 +845,9 @@ to
 ```
 
 **Motivation**
+
 When plenty of [foreign methods]() need to be added to a class.
+
 **Mechanics**
 
 * Create an extension class either as a subclass or a wrapper of the original.
