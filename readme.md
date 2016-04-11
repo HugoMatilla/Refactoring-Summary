@@ -668,7 +668,7 @@ to
 ```
 
 _The solution_
-``java
+```java
 
 	class ClientClass{
 		Server server = new Server()
