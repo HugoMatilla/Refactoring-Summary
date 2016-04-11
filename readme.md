@@ -517,7 +517,7 @@ When classes do to much work or when collaborate too much and are highly coupled
 * If removed, replace all references to the target method
 * Compile and test
 
-#11 Move field 
+##11 Move field 
 A field is, or will be, used by another class more than the class on which it is defined.
 _Create a new field in the target class, and change all its users._
 
@@ -556,7 +556,7 @@ If a field is used mostly by outer classes and before [12 Extract Class]()
 * Replace all references on the source with the ones on the target
 * Compile and test
 
-#12 Extract Class
+##12 Extract Class
 You have one class doing work that should be done by two.
 _Create a new class and move the relevant fields and methods from the old class into the new class._
 ```java
@@ -603,7 +603,7 @@ _Split them when_:
 * Review and reduce the interfaces of each class.
 * Decide whether to expose the new class. If you do expose the class, decide whether to expose it as a reference object or as an immutable value object.
 
-#13 Inline Class
+##13 Inline Class
 A class isn't doing very much.
 _Move all its features into another class and delete it._
 ```java
@@ -644,7 +644,7 @@ After refactoring normally there are a bunch of responsibilities moved out of th
 * Use [10 Move Method]() and [11 Move Field]() to move features from the source class to the absorbing class.
 * Hold a short, simple funeral service.
 
-#14 Hide Delegate
+##14 Hide Delegate
 A client is calling a delegate class of an object.  
 _Create methods on the server to hide the delegate._
 ```java
@@ -746,7 +746,7 @@ to
 	}
 ```
 
-#15 Remove Middle Man
+##15 Remove Middle Man
 A class is doing too much simple delegation.
 _Get the client to call the delegate directly._
 ```java
@@ -785,7 +785,7 @@ When the "Middle man" (the server) does to much is time for the client to call t
 * For each client use of a delegate method, remove the method from the server and replace the call in the client to call method on the delegate.
 * Compile and test
 
-#16 Introduce Foreign Method
+##16 Introduce Foreign Method
 A server class you are using needs an additional method, but you can't modify the class.  
 _Create a method in the client class with an instance of the server class as its first argument._
 
@@ -814,7 +814,7 @@ When there is a lack of a method in class that you use a lot and you can not cha
 * Make an instance of the server class the first parameter.
 * Comment the method as "foreign method; should be in server."
 
-#17 Introduce Local Extension
+##17 Introduce Local Extension
 A server class you are using needs several additional methods, but you can't modify the class. 
 _Create a new class that contains these extra methods. Make this extension class a subclass or a wrapper of the original._
 ```java
@@ -859,7 +859,7 @@ When plenty of [foreign methods]() need to be added to a class.
 * Replace the original with the extension where needed.
 * Move any foreign methods defined for this class onto the extension.
 
-#X 
+##X 
 ```java
 ```
 
