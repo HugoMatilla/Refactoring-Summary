@@ -862,8 +862,8 @@ When plenty of [foreign methods]() need to be added to a class.
 # Organizing Data
 
 ##18 Self Encapsulate Field 
-You are accessing a field directly, but the coupling to the field is becoming awkward. 
-_Create getting and setting methods for the field and use only those to access the field._
+You are accessing a field directly, but the coupling to the field is becoming awkward.   
+_Create getting and setting methods for the field and use only those to access the field._  
 ```java
 	
 	private int _low, _high;
@@ -883,11 +883,11 @@ to
 	int getHigh() {return _high;}
 ```
 
-**Motivation**
+**Motivation**  
 Allows a subclass to override how to get that information with a method and that it supports more flexibility in managing the data, such as lazy initialization.
 
 ##19 Replace Data Value with Object 
-You have a data item that needs additional data or behavior.
+You have a data item that needs additional data or behavior.  
 _Turn the data item into an object_
 
 ```java
@@ -918,7 +918,7 @@ to
 Simple data items  aren't so simple anymore.
 
 ##20 Change Value to Reference
-You have a class with many equal instances that you want to replace with a single object.
+You have a class with many equal instances that you want to replace with a single object.  
 _Turn the object into a reference object._
 ```java
 	
@@ -951,11 +951,11 @@ to
 			return (Customer) _instances.get(name);
 		}
 ```
-**Motivation**
+**Motivation**  
 Reference objects are things like customer or account. Each object stands for one object in the real world, and you use the object identity to test whether they are equal.
 
 ##21 Change Reference to Value
-You have a reference object that is small, immutable, and awkward to manage.
+You have a reference object that is small, immutable, and awkward to manage.  
 _Turn it into a value object_ 
 ```java
 
@@ -966,12 +966,11 @@ to
 	
 	new Currency("USD").equals(new Currency("USD")) // now returns true
 ```
-**Motivation**
+**Motivation**  
 Working with the reference object becomes awkward. The reference object is immutable and small. Used in distributed or concurrent systems.
-**Mechanics**
 
 ##22 Replace Array with Object
-You have an array in which certain elements mean different things.
+You have an array in which certain elements mean different things.  
 _Replace the array with an object that has a field for each element_
 ```java
 
@@ -986,16 +985,16 @@ to
 	row.setName("Liverpool");
 	row.setWins("15");
 ```
-**Motivation**
+**Motivation**  
 Arrays should be used only to contain a collection of similar objects in some order.
 
 ##23 Duplicate Observed Data
-You have domain data available only in a GUI control, and domain methods need access.
-_Copy the data to a domain object. Set up an observer to synchronize the two pieces of data_
-**Motivation**
+You have domain data available only in a GUI control, and domain methods need access.  
+_Copy the data to a domain object. Set up an observer to synchronize the two pieces of data_  
+**Motivation**  
  To separate code that handles the user interface from code that handles the business logic.
 ##24 Change Unidirectional Association to Bidirectional
-You have two classes that need to use each other's features, but there is only a one-way link.
+You have two classes that need to use each other's features, but there is only a one-way link.  
 _Add back pointers, and change modifiers to update both sets_
 ```java
 	
@@ -1054,17 +1053,17 @@ to
 			arg.removeCustomer(this);
 		}
 	}
-```
-**Motivation**
+``` 
+**Motivation**  
 When the object referenced needs access access to the object that refer to it.
 
 ##25 Change Bidirectional Association to Unidirectional
-You have a two-way association but one class no longer needs features from the other.
-_Drop the unneeded end of the association_
-**Motivation**
+You have a two-way association but one class no longer needs features from the other.  
+_Drop the unneeded end of the association_  
+**Motivation**  
 If Bidirectional association is not needed, reduce complexity, handle zombie objects, eliminate interdependency 
 ##26 Replace Magic Number with Symbolic Constant
-You have a literal number with a particular meaning.
+You have a literal number with a particular meaning.  
 _Create a constant, name it after the meaning, and replace the number with it_
 ```java
 
@@ -1080,15 +1079,25 @@ to
 	}
 	static final double GRAVITATIONAL_CONSTANT = 9.81;
 ```
-**Motivation**
+**Motivation**  
+Avoid using Magic numbers.
 
-##X 
+##27 Encapsulate Field
+There is a public field.  
+_Make it private and provide accessors_
 ```java
+
+	public String _name
 ```
 to
 ```java
+
+	private String _name;
+	public String getName() {return _name;}
+	public void setName(String arg) {_name = arg;}
 ```
-**Motivation**
+**Motivation**  
+You should never make your data public.
 
 ##X 
 ```java
