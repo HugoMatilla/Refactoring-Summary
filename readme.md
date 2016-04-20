@@ -859,16 +859,241 @@ When plenty of [foreign methods]() need to be added to a class.
 * Replace the original with the extension where needed.
 * Move any foreign methods defined for this class onto the extension.
 
-##X 
-```java
-```
+# Organizing Data
 
+##18 Self Encapsulate Field 
+You are accessing a field directly, but the coupling to the field is becoming awkward. 
+_Create getting and setting methods for the field and use only those to access the field._
+```java
+	
+	private int _low, _high;
+	boolean includes (int arg) {
+		return arg >= _low && arg <= _high;
+	}
+```
 to
 
-
 ```java
+	
+	private int _low, _high;
+	boolean includes (int arg) {
+		return arg >= getLow() && arg <= getHigh();
+	}
+	int getLow() {return _low;}
+	int getHigh() {return _high;}
 ```
 
 **Motivation**
+Allows a subclass to override how to get that information with a method and that it supports more flexibility in managing the data, such as lazy initialization.
 
+##19 Replace Data Value with Object 
+You have a data item that needs additional data or behavior.
+_Turn the data item into an object_
+
+```java
+	
+	class Order...{
+		private String _customer;
+		public Order (String customer) {
+			_customer = customer;
+		}
+	}
+```
+to
+```java
+	
+	class Order...{
+		public Order (String customer) {
+			_customer = new Customer(customer);
+		}
+	}	
+
+	class Customer {
+		public Customer (String name) {
+			_name = name;
+		}
+	}
+```
+**Motivation**
+Simple data items  aren't so simple anymore.
+
+##20 Change Value to Reference
+You have a class with many equal instances that you want to replace with a single object.
+_Turn the object into a reference object._
+```java
+	
+	class Order...{
+		public Order (String customer) {
+			_customer = new Customer(customer);
+		}
+	}	
+
+	class Customer {
+		public Customer (String name) {
+			_name = name;
+		}
+	}
+```
+to
+```java
+	
+	//Use Factory Method
+	class Customer...
+		static void loadCustomers() {
+			new Customer ("Lemon Car Hire").store();
+			new Customer ("Associated Coffee Machines").store();
+			new Customer ("Bilston Gasworks").store();
+		}
+		private void store() {
+			_instances.put(this.getName(), this);
+		}
+		public static Customer create (String name) {
+			return (Customer) _instances.get(name);
+		}
+```
+**Motivation**
+Reference objects are things like customer or account. Each object stands for one object in the real world, and you use the object identity to test whether they are equal.
+
+##21 Change Reference to Value
+You have a reference object that is small, immutable, and awkward to manage.
+_Turn it into a value object_ 
+```java
+
+	new Currency("USD").equals(new Currency("USD")) // returns false
+```
+to
+```java
+	
+	new Currency("USD").equals(new Currency("USD")) // now returns true
+```
+**Motivation**
+Working with the reference object becomes awkward. The reference object is immutable and small. Used in distributed or concurrent systems.
 **Mechanics**
+
+##22 Replace Array with Object
+You have an array in which certain elements mean different things.
+_Replace the array with an object that has a field for each element_
+```java
+
+	String[] row = new String[3];
+	row [0] = "Liverpool";
+	row [1] = "15";
+```
+to
+```java
+
+	Performance row = new Performance();
+	row.setName("Liverpool");
+	row.setWins("15");
+```
+**Motivation**
+Arrays should be used only to contain a collection of similar objects in some order.
+
+##23 Duplicate Observed Data
+You have domain data available only in a GUI control, and domain methods need access.
+_Copy the data to a domain object. Set up an observer to synchronize the two pieces of data_
+**Motivation**
+ To separate code that handles the user interface from code that handles the business logic.
+##24 Change Unidirectional Association to Bidirectional
+You have two classes that need to use each other's features, but there is only a one-way link.
+_Add back pointers, and change modifiers to update both sets_
+```java
+	
+	class Order...
+		Customer getCustomer() {
+			return _customer;
+		}
+		void setCustomer (Customer arg) {
+			_customer = arg;
+		}
+		Customer _customer;
+	}
+```
+to
+```java
+	
+	class Order...
+		Customer getCustomer() {
+			return _customer;
+		}
+		void setCustomer (Customer arg) {
+			if (_customer != null) _customer.friendOrders().remove(this);
+			_customer = arg;
+			if (_customer != null) _customer.friendOrders().add(this);
+		}
+		private Customer _customer;
+
+		class Customer...
+			void addOrder(Order arg) {
+				arg.setCustomer(this);
+			}
+			private Set _orders = new HashSet();
+			
+			Set friendOrders() {
+				/** should only be used by Order */
+				return _orders;
+			}
+		}
+	}
+
+	// Many to Many
+	class Order... //controlling methods
+		void addCustomer (Customer arg) {
+			arg.friendOrders().add(this);
+			_customers.add(arg);
+		}
+		void removeCustomer (Customer arg) {
+			arg.friendOrders().remove(this);
+			_customers.remove(arg);
+		}
+	class Customer...
+		void addOrder(Order arg) {
+			arg.addCustomer(this);
+		}
+		void removeOrder(Order arg) {
+			arg.removeCustomer(this);
+		}
+	}
+```
+**Motivation**
+When the object referenced needs access access to the object that refer to it.
+
+##25 Change Bidirectional Association to Unidirectional
+You have a two-way association but one class no longer needs features from the other.
+_Drop the unneeded end of the association_
+**Motivation**
+If Bidirectional association is not needed, reduce complexity, handle zombie objects, eliminate interdependency 
+##26 Replace Magic Number with Symbolic Constant
+You have a literal number with a particular meaning.
+_Create a constant, name it after the meaning, and replace the number with it_
+```java
+
+	double potentialEnergy(double mass, double height) {
+		return mass * 9.81 * height;
+	}
+```
+to
+```java
+
+	double potentialEnergy(double mass, double height) {
+		return mass * GRAVITATIONAL_CONSTANT * height;
+	}
+	static final double GRAVITATIONAL_CONSTANT = 9.81;
+```
+**Motivation**
+
+##X 
+```java
+```
+to
+```java
+```
+**Motivation**
+
+##X 
+```java
+```
+to
+```java
+```
+**Motivation**
