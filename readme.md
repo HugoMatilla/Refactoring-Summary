@@ -1166,6 +1166,7 @@ to
 ```
 **Motivation**  
 Statically type checking.
+
 ##31 Replace Type Code with Subclasses
 You have an immutable type code that affects the behavior of a class.  
 _Replace the type code with subclasses._
@@ -1201,10 +1202,11 @@ to
 	}
 ```
 **Motivation**  
-Execute different code depending on the value of a type.
-When each type code object has unique features.
-Structure to implement [XX Replace Conditional with Polymorphism]()
-Use of [30 Replace Type Code with Class]() when there is a conditional statement
+
+* Execute different code depending on the value of a type.
+* When each type code object has unique features.
+* Structure to implement [XX Replace Conditional with Polymorphism]()
+* Use of [30 Replace Type Code with Class]() when there is a conditional statement
 
 ##32 Replace Type Code with State/Strategy
 You have a type code that affects the behavior of a class, but you cannot use subclassing.  
@@ -1276,8 +1278,10 @@ to
 	}
 ```
 **Motivation**  
-Similar to [X Replace Type Code with Subclasses](), but can be used if the type code changes during the life of the object or if another reason prevents subclassing. 
-It uses either the state or strategy pattern
+
+* Similar to [X Replace Type Code with Subclasses](), but can be used if the type code changes during the life of the object or if another reason prevents subclassing. 
+* It uses either the state or strategy pattern
+
 ##32 Replace Subclass with Fields
 You have subclasses that vary only in methods that return constant data.  
 _Change the methods to superclass fields and eliminate the subclasses_
@@ -1325,10 +1329,13 @@ to
 	}
 ```
 **Motivation**  
+
 * Subclasses that consists only of constant methods is not doing enough to be worth existing.
 * Remove such subclasses completely by putting fields in the superclass.
 * Remove the extra complexity of the subclasses.
+
 #9 Simplifying Conditional Expressions
+
 ##33 Decompose Conditional
 You have a complicated conditional (if-then-else) statement.     
 _Extract methods from the condition, then part, and else parts_
@@ -1346,6 +1353,7 @@ to
 	else charge = summerCharge (quantity);
 ```
 **Motivation**  
+
 * Highlight the condition and make it clearly what you are branching on.
 * Highlight the reason for the branching 
 
@@ -1401,6 +1409,7 @@ to
 ```
 **Motivation**  
 Makes clearer what varies and what stays the same.
+
 ##36 Remove Control Flag
 You have a variable that is acting as a control flag for a series of boolean expressions.  
 _Use a break or return instead_
@@ -1472,11 +1481,13 @@ to
 	};
 ```
 **Motivation**  
-If the condition is an unusual condition, check the condition and return if the condition is true. 
-This kind of check is often called a **guard clause** [Beck].
-If you are using an if-then-else construct you are giving equal weight to the if leg and the else leg. 
-This communicates to the reader that the legs are equally likely and important. 
-Instead the **guard clause** says, _"This is rare, and if it happens, do something and get out."_
+
+* If the condition is an unusual condition, check the condition and return if the condition is true. 
+* This kind of check is often called a **guard clause** [Beck].
+* If you are using an if-then-else construct you are giving equal weight to the if leg and the else leg. 
+* This communicates to the reader that the legs are equally likely and important. 
+* Instead the **guard clause** says, _"This is rare, and if it happens, do something and get out."_
+
 ##38 Replace Conditional with Polymorphism
 You have a conditional that chooses different behavior depending on the type of an object.   
 _Move each leg of the conditional to an overriding method in a subclass. Make the original method abstract_
@@ -1530,10 +1541,12 @@ to
 	}
 ```
 **Motivation**  
-Avoid writing an explicit conditional when you have objects whose behavior varies depending on their types.
-Switch statements should be less common in object oriented programs
+
+* Avoid writing an explicit conditional when you have objects whose behavior varies depending on their types.
+* Switch statements should be less common in object oriented programs
+
 ##39 Introduce Null Object
-You have repeated checks for a null value.
+You have repeated checks for a null value.  
 _Replace the null value with a null object_
 ```java
 
@@ -1548,10 +1561,12 @@ to
 	class NullCusomer extends Customer {}
 ```
 **Motivation** 
-The object, depending on its type, does the right thing. Null objects should also apply this rule.
-Use **Null Object Pattern** is the little brother of **Special Case Pattern**.
+
+* The object, depending on its type, does the right thing. Null objects should also apply this rule.
+* Use **Null Object Pattern** is the little brother of **Special Case Pattern**.
+
 ##40 Introduce Assertion
-A section of code assumes something about the state of the program.
+A section of code assumes something about the state of the program.  
 _Make the assumption explicit with an assertion_
 ```java
 	
@@ -1573,11 +1588,13 @@ to
 	}
 ```
 **Motivation**  
-Assertions are conditional statements that are assumed to be always true.
-Assertion failures should always result in unchecked exceptions.
-Assertions usually are removed for production code.
-As communication  aids: they help the reader understand the assumptions the code is making.
-As debugging aids: assertions can help catch bugs closer to their origin.
+
+* Assertions are conditional statements that are assumed to be always true.
+* Assertion failures should always result in unchecked exceptions.
+* Assertions usually are removed for production code.
+* As communication  aids: they help the reader understand the assumptions the code is making.
+* As debugging aids: assertions can help catch bugs closer to their origin.
+
 ##X 
 ```java
 ```
