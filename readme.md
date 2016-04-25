@@ -1099,10 +1099,489 @@ to
 **Motivation**  
 You should never make your data public.
 
+##28 Encapsulate Collection
+A method returns a collection.  
+_Make it return a read-only view and provide add/remove methods_
+```java
+	
+	class Person {
+		Person (String name){
+			HashSet set new HashSet()
+		}
+		Set getCourses(){}
+		void setCourses(:Set){}
+	}
+```
+to
+```java
+
+	class Person {
+		Person (String name){
+			HashSet set new HashSet()
+		}
+		Unmodifiable Set getCourses(){}
+		void addCourses(:Course){}
+		void removeCourses(:Course){}
+	}
+```
+**Motivation**   
+* Encapsulated reduce the coupling of the owning class to its clients.
+* The getter should not return the collection object itself.
+* The getter should return something that prevents manipulation of the collection and hides unnecessary details.
+* There should not be a setter for collection, only operations to add and remove elements.
+
+##29 Remove Record with data class
+You need to interface with a record structure in a traditional programming environment.  
+_Make a dumb data object for the record._
+
+**Motivation**  
+* Copying a legacy program
+* Communicating a structured record with a traditional programming API or database.
+##30 Replace Type Code with Class
+A class has a numeric type code that does not affect its behavior.  
+_Replace the number with a new class._
+```java
+
+	class Person{
+		O:Int;
+		A:Int;
+		B:Int;
+		AB:Int;
+		bloodGroup:Int;
+	}
+```
+to
+```java
+
+	class Person{
+		bloodGroup:BloodGroup;
+	}
+
+	class BloodGroup{
+		O:BloodGroup;
+		A:BloodGroup;
+		B:BloodGroup;
+		AB:BloodGroup;
+	}
+```
+**Motivation**  
+Statically type checking.
+##31 Replace Type Code with Subclasses
+You have an immutable type code that affects the behavior of a class.  
+_Replace the type code with subclasses._
+```java	
+	
+	class Employee...
+		private int _type;
+		
+		static final int ENGINEER = 0;
+		static final int SALESMAN = 1;
+		static final int MANAGER = 2;
+		
+		Employee (int type) {
+			_type = type;
+		}
+	}
+```
+to
+```java
+
+	abstract int getType();
+	static Employee create(int type) {
+		switch (type) {
+			case ENGINEER:
+				return new Engineer();
+			case SALESMAN:
+				return new Salesman();
+			case MANAGER:
+				return new Manager();
+			default:
+				throw new IllegalArgumentException("Incorrect type code value");
+		}
+	}
+```
+**Motivation**  
+Execute different code depending on the value of a type.
+When each type code object has unique features.
+Structure to implement [XX Replace Conditional with Polymorphism]()
+Use of [30 Replace Type Code with Class]() when there is a conditional statement
+
+##32 Replace Type Code with State/Strategy
+You have a type code that affects the behavior of a class, but you cannot use subclassing.  
+_Replace the type code with a state object_
+```java
+
+	class Employee {
+		private int _type;
+	
+		static final int ENGINEER = 0;
+		static final int SALESMAN = 1;
+		static final int MANAGER = 2;
+
+		Employee (int type) {
+			_type = type;
+		}
+		int payAmount() {
+			switch (_type) {
+				case ENGINEER:
+					return _monthlySalary;
+				case SALESMAN:
+					return _monthlySalary + _commission;
+				case MANAGER:
+					return _monthlySalary + _bonus;
+				default:
+					throw new RuntimeException("Incorrect Employee");
+				}
+			}
+		}	
+	}
+```
+to
+```java
+	
+	class Employee...
+		static final int ENGINEER = 0;
+		static final int SALESMAN = 1;
+		static final int MANAGER = 2;
+
+		void setType(int arg) {
+			_type = EmployeeType.newType(arg);
+		}
+		class EmployeeType...
+			static EmployeeType newType(int code) {
+				switch (code) {
+					case ENGINEER:
+						return new Engineer();
+					case SALESMAN:
+						return new Salesman();
+					case MANAGER:
+						return new Manager();
+					default:
+						throw new IllegalArgumentException("Incorrect Employee Code");
+				}
+			}
+		}
+		int payAmount() {
+			switch (getType()) {
+				case EmployeeType.ENGINEER:
+					return _monthlySalary;
+				case EmployeeType.SALESMAN:
+					return _monthlySalary + _commission;
+				case EmployeeType.MANAGER:
+					return _monthlySalary + _bonus;
+				default:
+					throw new RuntimeException("Incorrect Employee");
+			}
+		}
+	}
+```
+**Motivation**  
+Similar to [X Replace Type Code with Subclasses](), but can be used if the type code changes during the life of the object or if another reason prevents subclassing. 
+It uses either the state or strategy pattern
+##32 Replace Subclass with Fields
+You have subclasses that vary only in methods that return constant data.  
+_Change the methods to superclass fields and eliminate the subclasses_
+```java
+	
+	abstract class Person {
+		abstract boolean isMale();
+		abstract char getCode();
+		...
+	}
+	class Male extends Person {
+			boolean isMale() {
+			return true;
+		}
+		char getCode() {
+			return 'M';
+		}
+	}
+	class Female extends Person {
+		boolean isMale() {
+			return false;
+		}
+		char getCode() {
+			return 'F';
+		}
+	}
+```
+to
+```java
+
+	class Person{
+		protected Person (boolean isMale, char code) {
+			_isMale = isMale;
+			_code = code;
+		}
+		boolean isMale() {
+			return _isMale;
+		}
+		static Person createMale(){
+			return new Person(true, 'M');
+		}
+		static Person createFemale(){
+			return new Person(false, 'F');
+		}
+	}
+```
+**Motivation**  
+* Subclasses that consists only of constant methods is not doing enough to be worth existing.
+* Remove such subclasses completely by putting fields in the superclass.
+* Remove the extra complexity of the subclasses.
+#9 Simplifying Conditional Expressions
+##33 Decompose Conditional
+You have a complicated conditional (if-then-else) statement.     
+_Extract methods from the condition, then part, and else parts_
+```java
+	
+	if (date.before (SUMMER_START) || date.after(SUMMER_END))
+		charge = quantity * _winterRate + _winterServiceCharge;
+	else charge = quantity * _summerRate;
+```
+to
+```java
+	
+	if (notSummer(date))
+		charge = winterCharge(quantity);
+	else charge = summerCharge (quantity);
+```
+**Motivation**  
+* Highlight the condition and make it clearly what you are branching on.
+* Highlight the reason for the branching 
+
+##34 Consolidate Conditional Expression
+You have a sequence of conditional tests with the same result.  
+_Combine them into a single conditional expression and extract it_
+```java
+	
+	double disabilityAmount() {
+	if (_seniority < 2) return 0;
+	if (_monthsDisabled > 12) return 0;
+	if (_isPartTime) return 0;
+	// compute the disability amount
+```
+to
+```java
+
+	double disabilityAmount() {
+	if (isNotEligableForDisability()) return 0;
+	// compute the disability amount
+```
+**Motivation**  
+
+* Makes the check clearer by showing that you are really making a single check
+* Sets you up for [X Extract Method]().
+* Clarify your code (replaces a statement of what you are doing with why you are doing it.)
+
+##35 Consolidate Duplicate Conditional Fragments
+The same fragment of code is in all branches of a conditional expression.  
+_Move it outside of the expression._
+```java
+	
+	if (isSpecialDeal()) {
+		total = price * 0.95;
+		send();
+	}
+	else {
+		total = price * 0.98;
+		send();
+	}
+```
+to
+```java
+
+	if (isSpecialDeal()) {
+		total = price * 0.95;
+	}
+	else {
+		total = price * 0.98;
+	}
+	send();
+
+```
+**Motivation**  
+Makes clearer what varies and what stays the same.
+##36 Remove Control Flag
+You have a variable that is acting as a control flag for a series of boolean expressions.  
+_Use a break or return instead_
+```java
+	
+	void checkSecurity(String[] people) {
+		boolean found = false;
+			for (int i = 0; i < people.length; i++) {
+				if (! found) {
+					if (people[i].equals ("Don")){
+						sendAlert();
+						found = true;
+					}
+					if (people[i].equals ("John")){
+						sendAlert();
+						found = true;
+					}
+				}
+		}
+	}
+```
+to
+```java
+
+	void checkSecurity(String[] people) {
+		for (int i = 0; i < people.length; i++) {
+			if (people[i].equals ("Don")){
+				sendAlert();
+				break; // or return
+			}
+			if (people[i].equals ("John")){
+				sendAlert();
+				break; // or return
+			}
+		}
+	}
+```
+**Motivation**  
+
+* Control flag are used to determine when to stop looking, but modern languages enforce the use of `break` and `continue`
+* Make the real purpose of the conditional much more clear.
+
+##37 Replace Nested Conditional with Guard Clauses
+A method has conditional behavior that does not make clear the normal path of execution.  
+_Use guard clauses for all the special cases_
+```java
+	
+	double getPayAmount() {
+		double result;
+		if (_isDead) result = deadAmount();
+		else {
+			if (_isSeparated) result = separatedAmount();
+			else {
+				if (_isRetired) result = retiredAmount();
+				else result = normalPayAmount();
+			};
+		}
+		return result;
+	};
+```
+to
+```java
+	
+	double getPayAmount() {
+		if (_isDead) return deadAmount();
+		if (_isSeparated) return separatedAmount();
+		if (_isRetired) return retiredAmount();
+		return normalPayAmount();
+	};
+```
+**Motivation**  
+If the condition is an unusual condition, check the condition and return if the condition is true. 
+This kind of check is often called a **guard clause** [Beck].
+If you are using an if-then-else construct you are giving equal weight to the if leg and the else leg. 
+This communicates to the reader that the legs are equally likely and important. 
+Instead the **guard clause** says, _"This is rare, and if it happens, do something and get out."_
+##38 Replace Conditional with Polymorphism
+You have a conditional that chooses different behavior depending on the type of an object.   
+_Move each leg of the conditional to an overriding method in a subclass. Make the original method abstract_
+```java
+
+	class Employee {
+		private int _type;
+	
+		static final int ENGINEER = 0;
+		static final int SALESMAN = 1;
+		static final int MANAGER = 2;
+
+		Employee (int type) {
+			_type = type;
+		}
+		int payAmount() {
+			switch (_type) {
+				case ENGINEER:
+					return _monthlySalary;
+				case SALESMAN:
+					return _monthlySalary + _commission;
+				case MANAGER:
+					return _monthlySalary + _bonus;
+				default:
+					throw new RuntimeException("Incorrect Employee");
+				}
+			}
+		}	
+	}
+```
+to
+```java
+
+	class Employee...
+		static final int ENGINEER = 0;
+		static final int SALESMAN = 1;
+		static final int MANAGER = 2;
+
+		void setType(int arg) {
+			_type = EmployeeType.newType(arg);
+		}
+		int payAmount() {
+			return _type.payAmount(this);
+		}
+	}
+
+	class Engineer...
+		int payAmount(Employee emp) {
+			return emp.getMonthlySalary();
+		}
+	}
+```
+**Motivation**  
+Avoid writing an explicit conditional when you have objects whose behavior varies depending on their types.
+Switch statements should be less common in object oriented programs
+##39 Introduce Null Object
+You have repeated checks for a null value.
+_Replace the null value with a null object_
+```java
+
+	if (customer == null) plan = BillingPlan.basic();
+	else plan = customer.getPlan();
+```
+to
+```java
+
+	class Customer {}
+
+	class NullCusomer extends Customer {}
+```
+**Motivation** 
+The object, depending on its type, does the right thing. Null objects should also apply this rule.
+Use **Null Object Pattern** is the little brother of **Special Case Pattern**.
+##40 Introduce Assertion
+A section of code assumes something about the state of the program.
+_Make the assumption explicit with an assertion_
+```java
+	
+	double getExpenseLimit() {
+		// should have either expense limit or a primary project
+		return (_expenseLimit != NULL_EXPENSE) ? 
+			_expenseLimit:
+			_primaryProject.getMemberExpenseLimit();
+	}
+```
+to
+```java
+
+	double getExpenseLimit() {
+		Assert.isTrue (_expenseLimit != NULL_EXPENSE || _primaryProject	!= null);
+		return (_expenseLimit != NULL_EXPENSE) ?
+			_expenseLimit:
+			_primaryProject.getMemberExpenseLimit();
+	}
+```
+**Motivation**  
+Assertions are conditional statements that are assumed to be always true.
+Assertion failures should always result in unchecked exceptions.
+Assertions usually are removed for production code.
+As communication  aids: they help the reader understand the assumptions the code is making.
+As debugging aids: assertions can help catch bugs closer to their origin.
 ##X 
 ```java
 ```
 to
 ```java
 ```
-**Motivation**
+**Motivation** 
