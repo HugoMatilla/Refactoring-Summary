@@ -1595,7 +1595,7 @@ to
 * As communication  aids: they help the reader understand the assumptions the code is making.
 * As debugging aids: assertions can help catch bugs closer to their origin.
 
-#Making Method Calls Simpler
+#10 Making Method Calls Simpler
 ##41 Rename method
 The name of a method does not reveal its purpose.  
 _Change the name of the method_
@@ -1606,7 +1606,7 @@ to
 ```java
 	getInvoiceableCreditLimit
 ```
-**Motivation** 
+**Motivation**   
 Methods names must communicate their intention.
 
 ##42 Add Parameter
@@ -1619,7 +1619,7 @@ to
 ```java
 	getContact(:Date)
 ```
-**Motivation** 
+**Motivation**    
 After changed a method you require more information.
 ##43 Remove Parameter
 A parameter is no longer used by the method body.  
@@ -1631,7 +1631,7 @@ to
 ```java
 	getContact()
 ```
-**Motivation** 
+**Motivation**    
 A parameter is no more needed.
 
 ##44 Separate Query from Modifier
@@ -1645,7 +1645,7 @@ to
 	getTotalOutStanding()
 	SetReadyForSummaries()
 ```
-**Motivation** 
+**Motivation**    
 Signaling methods with side effects and those without.
 ##45 Parameterize Method
 Several methods do similar things but with different values contained in the method body.  
@@ -1658,7 +1658,7 @@ to
 ```java
 	raise(percentage)
 ```
-**Motivation** 
+**Motivation**    
 Removes duplicate code and increases flexibility.
 ##46 Replace Parameter with Explicit Methods 
 You have a method that runs different code depending on the values of an enumerated parameter.  
@@ -1776,7 +1776,7 @@ to
 		¯\_(ツ)_/¯
 	}
 ```
-**Motivation**
+**Motivation**   
 Make your intention  clear: If you don't want that field to change once is created, then don't provide a setting method (and make the field final).
 
 ##51 Hide Method
@@ -1795,7 +1795,7 @@ to
 		private method()
 	}
 ```
-**Motivation**
+**Motivation**   
 Whenever a method is not needed outside its class it should be hidden
 
 ##52 Replace Constructor with Factory Method
@@ -1814,7 +1814,7 @@ to
 		return new Employee(type);
 	}
 ```
-**Motivation**
+**Motivation**   
 Create an object depending on its subclasses  (types). Constructors can only return an instance of the object that is asked for so a Factory method is needed.
 
 ##53 Encapsulate Downcast
@@ -1834,17 +1834,9 @@ to
 		return (Reading) readings.lastElement();
 	}
 ```
-**Motivation**
-Provide as result type, the most specific type of the method signature.
+**Motivation**   
+Provide as result type, the most specific type of the method signature.      
 If the signature is to general, check the uses the clients do of that method and if coherent, provide a more specific one.
-
-##
-```java
-```
-to
-```java
-```
-**Motivation**
 
 ##54 Replace Error Code with Exception
 A method returns a special code to indicate an error.   
@@ -1872,7 +1864,7 @@ to
 **Motivation**
 When a program that spots an error can't figure out what to do about it. It needs to let its caller know, and the caller may pass the error up the chain.
 ##55 Replace Exception with Test
-You are throwing a checked exception on a condition the caller could have checked first.
+You are throwing a checked exception on a condition the caller could have checked first.   
 _Change the caller to make the test first_
 ```java
 	
