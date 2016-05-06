@@ -1595,10 +1595,306 @@ to
 * As communication  aids: they help the reader understand the assumptions the code is making.
 * As debugging aids: assertions can help catch bugs closer to their origin.
 
-##X 
+#Making Method Calls Simpler
+##41 Rename method
+The name of a method does not reveal its purpose.  
+_Change the name of the method_
+```java
+	getinvcdtlmt()
+```
+to
+```java
+	getInvoiceableCreditLimit
+```
+**Motivation** 
+Methods names must communicate their intention.
+
+##42 Add Parameter
+A method needs more information from its caller.  
+_Add a parameter for an object that can pass on this information_
+```java
+	getContact()
+```
+to
+```java
+	getContact(:Date)
+```
+**Motivation** 
+After changed a method you require more information.
+##43 Remove Parameter
+A parameter is no longer used by the method body.  
+_Remove it_
+```java
+	getContact(:Date)
+```
+to
+```java
+	getContact()
+```
+**Motivation** 
+A parameter is no more needed.
+
+##44 Separate Query from Modifier
+You have a method that returns a value but also changes the state of an object.  
+_Create two methods, one for the query and one for the modification_
+```java
+	getTotalOutStandingAndSetReadyForSummaries()
+```
+to
+```java
+	getTotalOutStanding()
+	SetReadyForSummaries()
+```
+**Motivation** 
+Signaling methods with side effects and those without.
+##45 Parameterize Method
+Several methods do similar things but with different values contained in the method body.  
+_Create one method that uses a parameter for the different values_
+```java
+	fivePercentRaise()
+	tenPercentRaise()
+```
+to
+```java
+	raise(percentage)
+```
+**Motivation** 
+Removes duplicate code and increases flexibility.
+##46 Replace Parameter with Explicit Methods 
+You have a method that runs different code depending on the values of an enumerated parameter.  
+_Create a separate method for each value of the parameter_
+```java
+
+	void setValue (String name, int value) {
+		if (name.equals("height")){}
+			_height = value;
+			return;
+		}
+		if (name.equals("width")){
+			_width = value;
+			return;
+		}
+		Assert.shouldNeverReachHere();
+	}
+```
+to
+```java
+
+	void setHeight(int arg) {
+		_height = arg;
+	}
+	void setWidth (int arg) {
+		_width = arg;
+	}
+```
+**Motivation** 
+
+* Avoid the conditional behavior 
+* Gain compile time checking
+* Clearer Interface
+
+##47 Preserve Whole Object
+You are getting several values from an object and passing these values as parameters in a method call.  
+_Send the whole object instead_
+```java
+	
+	int low = daysTempRange().getLow();
+	int high = daysTempRange().getHigh();
+	withinPlan = plan.withinRange(low, high);
+```
+to
+```java
+
+	withinPlan = plan.withinRange(daysTempRange());
+```
+**Motivation** 
+
+* Make parameters list robust to changes
+* Make code more readeable
+* Remove possible duplicate code already done in the object passed
+* Negative: It creates a dependency between the parameter object and the called.
+
+##48 Replace Parameter with Method
+An object invokes a method, then passes the result as a parameter for a method. The receiver can also invoke this method.  
+_Remove the parameter and let the receiver invoke the method_
+```java
+	
+	int basePrice = _quantity * _itemPrice;
+	discountLevel = getDiscountLevel();
+	double finalPrice = discountedPrice (basePrice, discountLevel);
+```
+to
+```java
+	
+	int basePrice = _quantity * _itemPrice;
+	double finalPrice = discountedPrice (basePrice);
+```
+**Motivation** 
+
+* If a method can get a value that is passed in as parameter by another means, it should.
+* If the receiving method can make the same calculation (does not reference any of the parameters of the calling method)
+* If you are calling a method on a different object that has a reference to the calling object.
+
+##49 Introduce Parameter Object
+You have a group of parameters that naturally go together.  
+_Replace them with an object_
+```java
+	
+	class Customer{
+		amountInvoicedIn (start : Date, end : Date)
+		amountReceivedIn (start : Date, end : Date)
+		amountOverdueIn (start : Date, end : Date)
+	}
+```
+to
+```java
+	
+	class Customer{
+		amountInvoicedIn (: DateRange)
+		amountReceivedIn (: DateRange)
+		amountOverdueIn (: DateRange)
+	}
+```
+**Motivation** 
+
+* Reduces the size of the parameter list
+* Make the code more consistent
+
+##50 Remove Setting Method
+A field should be set at creation time and never altered.  
+_Remove any setting method for that field_
+```java
+
+	class Employee{
+		setImmutableValue()
+	}
+```
+to
+```java
+
+	class Employee{
+		¯\_(ツ)_/¯
+	}
+```
+**Motivation**
+Make your intention  clear: If you don't want that field to change once is created, then don't provide a setting method (and make the field final).
+
+##51 Hide Method
+A method is not used by any other class.  
+_Make the method private_
+```java
+
+	class Employee{
+		public method()
+	}
+```
+to
+```java
+	
+	class Employee{
+		private method()
+	}
+```
+**Motivation**
+Whenever a method is not needed outside its class it should be hidden
+
+##52 Replace Constructor with Factory Method
+You want to do more than simple construction when you create an object.  
+_Replace the constructor with a factory method_
+```java
+	
+	Employee (int type) {
+		_type = type;
+	}
+```
+to
+```java
+	
+	static Employee create(int type) {
+		return new Employee(type);
+	}
+```
+**Motivation**
+Create an object depending on its subclasses  (types). Constructors can only return an instance of the object that is asked for so a Factory method is needed.
+
+##53 Encapsulate Downcast
+A method returns an object that needs to be downcasted by its callers.  
+_Move the downcast to within the method_
+
+```java
+
+	Object lastReading() {
+		return readings.lastElement();
+	}
+```
+to
+```java
+	
+	Reading lastReading() {
+		return (Reading) readings.lastElement();
+	}
+```
+**Motivation**
+Provide as result type, the most specific type of the method signature.
+If the signature is to general, check the uses the clients do of that method and if coherent, provide a more specific one.
+
+##
 ```java
 ```
 to
 ```java
 ```
-**Motivation** 
+**Motivation**
+
+##54 Replace Error Code with Exception
+A method returns a special code to indicate an error.   
+_Throw an exception instead_
+```java
+
+	int withdraw(int amount) {
+		if (amount > _balance)
+			return -1;
+		else {
+			_balance -= amount;
+			return 0;
+		}
+	}
+```
+to
+```java
+	
+	void withdraw(int amount) throws BalanceException {
+		if (amount > _balance)
+			throw new BalanceException();
+		_balance -= amount;
+	}
+```
+**Motivation**
+When a program that spots an error can't figure out what to do about it. It needs to let its caller know, and the caller may pass the error up the chain.
+##55 Replace Exception with Test
+You are throwing a checked exception on a condition the caller could have checked first.
+_Change the caller to make the test first_
+```java
+	
+	double getValueForPeriod (int periodNumber) {
+		try {
+			return _values[periodNumber];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+```
+to
+```java
+	
+	double getValueForPeriod (int periodNumber) {
+		if (periodNumber >= _values.length) 
+			return 0;
+		return _values[periodNumber];
+}
+```
+**Motivation**
+
+* Do not overuse Exceptions they should be used for exceptional behavior (behavior that is unexpected). 
+* Do not use them as substitute for conditional tests.
+* Check expected wrong conditions before before calling the operation.
