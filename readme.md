@@ -1890,3 +1890,355 @@ to
 * Do not overuse Exceptions they should be used for exceptional behavior (behavior that is unexpected). 
 * Do not use them as substitute for conditional tests.
 * Check expected wrong conditions before before calling the operation.
+
+#11 Dealing with Generalization
+##56 Pull up field
+Two subclasses have the same field.   
+_Move the field to the superclass_   
+```java
+
+	Salesman extends Employee{
+		String name;
+	}
+	Engineer extends Employee{
+		String name;
+	}
+```
+to
+```java
+	
+	Employee{
+		String name;
+	}
+	Salesman extends Employee{
+	}
+	Engineer extends Employee{
+	}
+
+```	
+**Motivation**	
+
+* Removes the duplicate data declaration.
+* Allows  to move  behavior from the subclasses to the superclass.
+
+##57 Pull Up Method
+You have methods with identical results on subclasses.   
+_Move them to the superclass_
+```java
+
+	Salesman extends Employee{
+		String getName();
+	}
+	Engineer extends Employee{
+		String getName();
+	}
+```
+to
+```java
+	
+	Employee{
+		String getName();
+	}
+	Salesman extends Employee{
+	}
+	Engineer extends Employee{
+	}
+
+```	
+**Motivation**	
+
+* Eliminates duplicated behavior. 
+
+##58 Pull Up Constructor Body
+You have constructors on subclasses with mostly identical bodies.  
+_Create a superclass constructor; call this from the subclass methods_  
+```java
+
+	class Manager extends Employee...
+		public Manager (String name, String id, int grade) {
+		_name = name;
+		_id = id;
+		_grade = grade;
+	}
+	
+```
+to
+```java
+	
+	public Manager (String name, String id, int grade) {
+		super (name, id);
+		_grade = grade;
+	}
+```	
+**Motivation**	
+
+* Constructors are not the same as methods. 
+* Eliminates duplicated behavior. 
+
+##59 Push Down Method
+Behavior on a superclass is relevant only for some of its subclasses.   
+_Move it to those subclasses._   
+```java
+	
+	Employee{
+		int getQuota();
+	}
+	Salesman extends Employee{
+	}
+	Engineer extends Employee{
+	}
+```
+to
+```java
+	
+	Salesman extends Employee{
+		int getQuota();
+	}
+	Engineer extends Employee{
+	}
+```	
+**Motivation**	
+When a method makes only sense in the subclass.
+##60 Push Down Field
+A field is used only by some subclasses.  
+_Move the field to those subclasses_
+```java
+	
+	Employee{
+		int quota;
+	}
+	Salesman extends Employee{
+	}
+	Engineer extends Employee{
+	}
+```
+to
+```java
+	
+	Salesman extends Employee{
+		int quota;
+	}
+	Engineer extends Employee{
+	}
+```	
+**Motivation**	
+When a field makes only sense in the subclass.
+##61 Extract Subclass
+A class has features that are used only in some instances.  
+_Create a subclass for that subset of features_  
+```java
+	
+	JobItem	{
+		getTotalPrices()
+		getUnitPrice()
+		getEmployee()
+	}
+```
+to
+```java
+
+	JobItem	{
+		getTotalPrices()
+		getUnitPrice()
+	}
+	LabotItem extends JobItem	{
+		getUnitPrice()
+		getEmployee()
+	}
+```	
+**Motivation**	
+When a class has behavior used for some instances of the class and not for others.
+##62 Extract Superclass
+You have two classes with similar features.   
+_Create a superclass and move the common features to the superclass_  
+```java
+	
+	Department{
+		getTotalAnnualCost()
+		getName()
+		getHeadCount
+	}
+	Employee{
+		getAnnualCost()
+		getName()
+		getId
+	}
+	
+```
+to
+```java
+	
+	Party{
+		getAnnualCost()
+		getName()
+	}
+	Department {
+		getAnnualCost()
+		getHeadCount
+	}
+	Employee {
+		getAnnualCost()
+		getId
+	}
+
+```	
+**Motivation**	 
+When two classes that do similar things in the same way or similar things in different ways.
+##63 Extract Interface
+Several clients use the same subset of a class's interface, or two classes have part of their interfaces in common.  
+_Extract the subset into an interface_  
+```java
+	
+	Employee {
+		getRate()
+		hasSpecialSkill()
+		getName()
+		getDepartment()
+	}
+```
+to
+```java
+
+	interface Billable	{
+		getRate()
+		hasSpecialSkill()
+	}
+	Employee implements Billable	{
+		getRate
+		hasSpecialSkill()
+		getName()
+		getDepartment()
+	}
+**Motivation**	
+
+* If only a particular subset of a class's responsibilities is used by a group of clients.
+* If a class needs to work with any class that can handle certain requests.
+* Whenever a class has distinct roles in different situations.
+
+##64 Collapse Hierarchy
+A superclass and subclass are not very different.   
+_Merge them together_
+```java
+	
+	Employee{	}
+	Salesman extends Employee{	}
+```
+to
+```java
+	
+	Employee{	}
+```		
+**Motivation**	 
+When a subclass that isn't adding any value.
+##65 Form Template Method
+You have two methods in subclasses that perform similar steps in the same order, yet the steps are different.
+_Get the steps into methods with the same signature, so that the original methods become the same. Then you can pull them up_
+```java
+	
+	Site{ 	
+	}
+	ResidentialSite extends Site{
+		getBillableAmount()
+	}
+	LifelineSite extends Site{
+		getBillableAmount()
+	}
+```
+to
+```java
+	
+	Site{ 	
+		getBillableAmount()
+		getBaseAmount()
+		getTaxAmount()
+	}
+	ResidentialSite extends Site{
+		getBaseAmount()
+		getTaxAmount()	
+	}
+	LifelineSite extends Site{
+		getBaseAmount()
+		getTaxAmount()
+	}
+```	
+**Motivation**	
+
+* Use Inheritance with polymorphism  for eliminating duplicate behavior that is slightly different. 
+* When there are two similar methods in a subclass, bring them together in a superclass.
+* [Template Method](https://www.wikiwand.com/en/Template_method_pattern)[[Gang of Four]](https://www.wikiwand.com/en/Design_Patterns)
+
+##66 Replace Inheritance with Delegation
+A subclass uses only part of a superclasses interface or does not want to inherit data.  
+_Create a field for the superclass, adjust methods to delegate to the superclass, and remove the subclassing_
+```java
+	
+	Vector{
+		isEmpty()
+	}
+
+	Stack extends Vector {
+	}
+	
+```
+to
+```java
+	
+	Vector {
+		isEmpty()
+	}
+
+	Stack {
+		Vector vector
+		isEmpty(){
+			return vector.isEmpty()
+		}
+	}
+
+```	
+**Motivation**	
+
+* Using delegation makes  clear that you are making only partial use of the delegated class. 
+* You control which aspects of the interface to take and which to ignore.
+
+Mechanics
+##67 Replace Delegation with Inheritance
+You're using delegation and are often writing many simple delegations for the entire interface.   
+_Make the delegating class a subclass of the delegate_
+```java
+	
+	Person {
+		getName()
+	}
+
+	Employee {
+		Person person
+		getName(){
+			return person.getName()
+		}
+	}
+```
+to
+```java
+	
+	Person{
+		getName()
+	}
+	Employee extends Person{
+	}
+
+```	
+**Motivation**	 
+
+* If you are using all the methods of the delegate.
+* If you aren't using all the methods of the class to which you are delegating, you shouldn't use it.
+* Beware of is that in which the delegate is shared by more than one object and is mutable. Data sharing is a responsibility that cannot be transferred back to inheritance.
+
+##X
+```java
+	
+```
+to
+```java
+
+```	
+**Motivation**	
