@@ -2065,6 +2065,7 @@ to
 		getName()
 		getDepartment()
 	}
+```	
 **Motivation**
 
 * If only a particular subset of a class's responsibilities is used by a group of clients.
