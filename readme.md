@@ -2233,12 +2233,115 @@ to
 * If you aren't using all the methods of the class to which you are delegating, you shouldn't use it.
 * Beware of is that in which the delegate is shared by more than one object and is mutable. Data sharing is a responsibility that cannot be transferred back to inheritance.
 
-##X
+#12 Big Refactorings
+##68 Tease Apart Inheritance
+You have an inheritance hierarchy that is doing two jobs at once.
+_Create two hierarchies and use delegation to invoke one from the other_
+```java
+
+	Deal{}
+	ActiveDeal extends Deal{}
+	PassiveDeal extends Deal{}
+	TabularActiveDeal extends ActiveDeal{}
+	TabularPassiveDeal extends PassiveDeal{}
+```
+to
 ```java
 	
+	Deal{
+		PresentationStyle presettationStyle;
+	}
+	ActiveDeal extends Deal{}
+	PassiveDeal extends Deal{}
+
+	PresentationStyle{}
+	TabularPresentationStyle extends PresentationStyle{}
+	SinglePresentationStyle extends PresentationStyle{}
+
+```	
+**Motivation**	
+
+* Tangled inheritance leads to code duplication.
+* If every class at a certain level in the hierarchy has subclasses that begin with the same adjective, you probably are doing two jobs with one hierarchy.
+
+**Mechanics Note**   
+Identify the different jobs being done by the hierarchy. Create a two-dimensional(or x-dimensional) grid and label the axes with the different jobs. 
+
+| Deal         | Active Deal | Passive Deal |
+|--------------|-------------|--------------|
+| Tabular Deal |             |              |
+
+##69 Convert Procedural Design to Objects
+You have code written in a procedural style.
+_Turn the data records into objects, break up the behavior, and move the behavior to the objects_
+```java
+
+	OrderCalculator{
+		determinePrice(Order)
+		determineTaxes(Order)
+	}
+	Order{}
+	OrderLine{}
 ```
 to
 ```java
 
-```	
+	Order{
+		getPrice()
+		getTaxes()
+	}
+	OrderLine{
+		getPrice()
+		getTaxes()
+	}
+```
+**Motivation**	
+Use OOP (at least in JAVA)
+
+##70 Separate Domain from Presentation
+You have GUI classes that contain domain logic.
+_Separate the domain logic into separate domain classes_
+```java
+
+	OrderWindow{}
+```
+to
+```java
+
+	OrderWindow{
+		Order order;
+}
+```
+**Motivation**	
+
+* Separates two complicated parts of the program into pieces that are easier to modify.
+* Allows multiple presentations of the same business logic. 
+* Its worth is proved
+
+##71 Extract Hierarchy
+You have a class that is doing too much work, at least in part through many conditional statements.
+_Create a hierarchy of classes in which each subclass represents a special case_
+```java
+	
+	BillingScheme{}
+```
+to
+```java
+	
+	BillingScheme{}
+	BusinessBillingScheme extends BillingScheme{}
+	ResidentialBillingScheme extends BillingScheme{}
+	DisabilityBillingScheme extends BillingScheme{}
+```
+**Motivation**   
+
+* A class as implementing one idea become implementing two or three or ten.
+* Keep the Single Responsibility Principle.
+
+##X
+```java
+```
+to
+```java
+```
 **Motivation**	
