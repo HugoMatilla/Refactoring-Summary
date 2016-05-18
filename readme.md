@@ -1853,23 +1853,21 @@ Two subclasses have the same field.
 _Move the field to the superclass_   
 ```java
 
-	Salesman extends Employee{
+	class Salesman extends Employee{
 		String name;
 	}
-	Engineer extends Employee{
+	class Engineer extends Employee{
 		String name;
 	}
 ```
 to
 ```java
 
-	Employee{
+	class Employee{
 		String name;
 	}
-	Salesman extends Employee{
-	}
-	Engineer extends Employee{
-	}
+	class Salesman extends Employee{}
+	class Engineer extends Employee{}
 
 ```
 **Motivation**
@@ -1882,23 +1880,21 @@ You have methods with identical results on subclasses.
 _Move them to the superclass_
 ```java
 
-	Salesman extends Employee{
+	class Salesman extends Employee{
 		String getName();
 	}
-	Engineer extends Employee{
+	class Engineer extends Employee{
 		String getName();
 	}
 ```
 to
 ```java
 
-	Employee{
+	class Employee{
 		String getName();
 	}
-	Salesman extends Employee{
-	}
-	Engineer extends Employee{
-	}
+	class Salesman extends Employee{}
+	class Engineer extends Employee{}
 
 ```
 **Motivation**
@@ -1936,22 +1932,19 @@ Behavior on a superclass is relevant only for some of its subclasses.
 _Move it to those subclasses._   
 ```java
 
-	Employee{
+	class Employee{
 		int getQuota();
 	}
-	Salesman extends Employee{
-	}
-	Engineer extends Employee{
-	}
+	class Salesman extends Employee{}
+	class Engineer extends Employee{}
 ```
 to
 ```java
 
-	Salesman extends Employee{
+	class Salesman extends Employee{
 		int getQuota();
 	}
-	Engineer extends Employee{
-	}
+	class Engineer extends Employee{}
 ```
 **Motivation**
 When a method makes only sense in the subclass.
@@ -1960,22 +1953,19 @@ A field is used only by some subclasses.
 _Move the field to those subclasses_
 ```java
 
-	Employee{
+	class Employee{
 		int quota;
 	}
-	Salesman extends Employee{
-	}
-	Engineer extends Employee{
-	}
+	class Salesman extends Employee{}
+	class Engineer extends Employee{}
 ```
 to
 ```java
 
-	Salesman extends Employee{
+	class Salesman extends Employee{
 		int quota;
 	}
-	Engineer extends Employee{
-	}
+	class Engineer extends Employee{}
 ```
 **Motivation**
 When a field makes only sense in the subclass.
@@ -1984,7 +1974,7 @@ A class has features that are used only in some instances.
 _Create a subclass for that subset of features_  
 ```java
 
-	JobItem	{
+	class JobItem	{
 		getTotalPrices()
 		getUnitPrice()
 		getEmployee()
@@ -1997,7 +1987,7 @@ to
 		getTotalPrices()
 		getUnitPrice()
 	}
-	LabotItem extends JobItem	{
+	class class LabotItem extends JobItem	{
 		getUnitPrice()
 		getEmployee()
 	}
@@ -2009,12 +1999,12 @@ You have two classes with similar features.
 _Create a superclass and move the common features to the superclass_  
 ```java
 
-	Department{
+	class Department{
 		getTotalAnnualCost()
 		getName()
 		getHeadCount
 	}
-	Employee{
+	class Employee{
 		getAnnualCost()
 		getName()
 		getId
@@ -2024,15 +2014,15 @@ _Create a superclass and move the common features to the superclass_
 to
 ```java
 
-	Party{
+	class Party{
 		getAnnualCost()
 		getName()
 	}
-	Department {
+	class Department {
 		getAnnualCost()
 		getHeadCount
 	}
-	Employee {
+	class Employee {
 		getAnnualCost()
 		getId
 	}
@@ -2045,7 +2035,7 @@ Several clients use the same subset of a class's interface, or two classes have 
 _Extract the subset into an interface_  
 ```java
 
-	Employee {
+	class Employee {
 		getRate()
 		hasSpecialSkill()
 		getName()
@@ -2059,7 +2049,7 @@ to
 		getRate()
 		hasSpecialSkill()
 	}
-	Employee implements Billable	{
+	class Employee implements Billable	{
 		getRate
 		hasSpecialSkill()
 		getName()
@@ -2077,13 +2067,13 @@ A superclass and subclass are not very different.
 _Merge them together_
 ```java
 
-	Employee{	}
-	Salesman extends Employee{	}
+	class Employee{	}
+	class Salesman extends Employee{	}
 ```
 to
 ```java
 
-	Employee{	}
+	class Employee{	}
 ```		
 **Motivation**	 
 When a subclass that isn't adding any value.
@@ -2092,28 +2082,27 @@ You have two methods in subclasses that perform similar steps in the same order,
 _Get the steps into methods with the same signature, so that the original methods become the same. Then you can pull them up_
 ```java
 
-	Site{ 	
-	}
-	ResidentialSite extends Site{
+	class Site{}
+	class ResidentialSite extends Site{
 		getBillableAmount()
 	}
-	LifelineSite extends Site{
+	class LifelineSite extends Site{
 		getBillableAmount()
 	}
 ```
 to
 ```java
 
-	Site{ 	
+	class Site{ 	
 		getBillableAmount()
 		getBaseAmount()
 		getTaxAmount()
 	}
-	ResidentialSite extends Site{
+	class ResidentialSite extends Site{
 		getBaseAmount()
 		getTaxAmount()
 	}
-	LifelineSite extends Site{
+	class LifelineSite extends Site{
 		getBaseAmount()
 		getTaxAmount()
 	}
@@ -2129,22 +2118,21 @@ A subclass uses only part of a superclasses interface or does not want to inheri
 _Create a field for the superclass, adjust methods to delegate to the superclass, and remove the subclassing_
 ```java
 
-	Vector{
+	class Vector{
 		isEmpty()
 	}
 
-	Stack extends Vector {
-	}
+	class Stack extends Vector {}
 
 ```
 to
 ```java
 
-	Vector {
+	class Vector {
 		isEmpty()
 	}
 
-	Stack {
+	class Stack {
 		Vector vector
 		isEmpty(){
 			return vector.isEmpty()
@@ -2163,11 +2151,11 @@ You're using delegation and are often writing many simple delegations for the en
 _Make the delegating class a subclass of the delegate_
 ```java
 
-	Person {
+	class Person {
 		getName()
 	}
 
-	Employee {
+	class Employee {
 		Person person
 		getName(){
 			return person.getName()
@@ -2177,11 +2165,10 @@ _Make the delegating class a subclass of the delegate_
 to
 ```java
 
-	Person{
+	class Person{
 		getName()
 	}
-	Employee extends Person{
-	}
+	class Employee extends Person{}
 
 ```
 **Motivation**	 
@@ -2196,24 +2183,24 @@ You have an inheritance hierarchy that is doing two jobs at once.
 _Create two hierarchies and use delegation to invoke one from the other_
 ```java
 
-	Deal{}
-	ActiveDeal extends Deal{}
-	PassiveDeal extends Deal{}
-	TabularActiveDeal extends ActiveDeal{}
-	TabularPassiveDeal extends PassiveDeal{}
+	class Deal{}
+	class ActiveDeal extends Deal{}
+	class PassiveDeal extends Deal{}
+	class TabularActiveDeal extends ActiveDeal{}
+	class TabularPassiveDeal extends PassiveDeal{}
 ```
 to
 ```java
 
-	Deal{
+	class Deal{
 		PresentationStyle presettationStyle;
 	}
-	ActiveDeal extends Deal{}
-	PassiveDeal extends Deal{}
+	class ActiveDeal extends Deal{}
+	class PassiveDeal extends Deal{}
 
-	PresentationStyle{}
-	TabularPresentationStyle extends PresentationStyle{}
-	SinglePresentationStyle extends PresentationStyle{}
+	class PresentationStyle{}
+	class TabularPresentationStyle extends PresentationStyle{}
+	class SinglePresentationStyle extends PresentationStyle{}
 
 ```
 **Motivation**
@@ -2233,21 +2220,21 @@ You have code written in a procedural style.
 _Turn the data records into objects, break up the behavior, and move the behavior to the objects_
 ```java
 
-	OrderCalculator{
+	class OrderCalculator{
 		determinePrice(Order)
 		determineTaxes(Order)
 	}
-	Order{}
-	OrderLine{}
+	class Order{}
+	class OrderLine{}
 ```
 to
 ```java
 
-	Order{
+	class Order{
 		getPrice()
 		getTaxes()
 	}
-	OrderLine{
+	class OrderLine{
 		getPrice()
 		getTaxes()
 	}
@@ -2260,12 +2247,12 @@ You have GUI classes that contain domain logic.
 _Separate the domain logic into separate domain classes_
 ```java
 
-	OrderWindow{}
+	class OrderWindow{}
 ```
 to
 ```java
 
-	OrderWindow{
+	class OrderWindow{
 		Order order;
 }
 ```
@@ -2280,15 +2267,15 @@ You have a class that is doing too much work, at least in part through many cond
 _Create a hierarchy of classes in which each subclass represents a special case_
 ```java
 
-	BillingScheme{}
+	class BillingScheme{}
 ```
 to
 ```java
 
-	BillingScheme{}
-	BusinessBillingScheme extends BillingScheme{}
-	ResidentialBillingScheme extends BillingScheme{}
-	DisabilityBillingScheme extends BillingScheme{}
+	class BillingScheme{}
+	class BusinessBillingScheme extends BillingScheme{}
+	class ResidentialBillingScheme extends BillingScheme{}
+	class DisabilityBillingScheme extends BillingScheme{}
 ```
 **Motivation**   
 
