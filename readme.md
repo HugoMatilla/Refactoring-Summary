@@ -38,7 +38,7 @@ Contributions: Issues, comments and pull requests are super welcome :smiley:
 	- [4. Replace Temp with Query](#4-replace-temp-with-query)
 	- [5. Introduce Explaining Variable](#5-introduce-explaining-variable)
 	- [6. Split Temporary Variable](#6-split-temporary-variable)
-	- [7. REMOVE ASSIGNMENTS TO PARAMETERS](#7-remove-assignments-to-parameters)
+	- [7. Remove Assignments to Parameters](#7-remove-assignments-to-parameters)
 	- [8. Replace Method with Method Object](#8-replace-method-with-method-object)
 	- [9. Substitute Algorithm](#9-substitute-algorithm)
 - [7. Moving features between elements](#7-moving-features-between-elements)
@@ -361,7 +361,7 @@ to
 * Variables should not have more than one responsibility.
 * Using a temp for two different things is very confusing for the reader.
 
-##7. REMOVE ASSIGNMENTS TO PARAMETERS
+##7. Remove Assignments to Parameters
 The code assign to a parameter
 ```java
 
