@@ -7,7 +7,8 @@ Contributions: Issues, comments and pull requests are super welcome :smiley:
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 #1 TABLE OF CONTENT
-- [3. Bad Smells in code](#3-bad-smells-in-code)
+- [1. TABLE OF CONTENT](#1-table-of-content)
+- [3. BAD SMELLS IN CODE](#3-bad-smells-in-code)
 	- [1. Duplicated code](#1-duplicated-code)
 	- [2. Long Method](#2-long-method)
 	- [3. Large Classes](#3-large-classes)
@@ -112,7 +113,7 @@ Contributions: Issues, comments and pull requests are super welcome :smiley:
 
 <!-- /TOC -->
 
-#3. Bad Smells in code
+#3. BAD SMELLS IN CODE
 ###1. Duplicated code
 Same code structure in more than one place.
 ###2. Long Method
