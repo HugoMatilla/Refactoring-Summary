@@ -2235,7 +2235,7 @@ to
 
 #12 Big Refactorings
 ##68 Tease Apart Inheritance
-You have an inheritance hierarchy that is doing two jobs at once.
+You have an inheritance hierarchy that is doing two jobs at once.   
 _Create two hierarchies and use delegation to invoke one from the other_
 ```java
 
@@ -2272,7 +2272,7 @@ Identify the different jobs being done by the hierarchy. Create a two-dimensiona
 | Tabular Deal |             |              |
 
 ##69 Convert Procedural Design to Objects
-You have code written in a procedural style.
+You have code written in a procedural style.   
 _Turn the data records into objects, break up the behavior, and move the behavior to the objects_
 ```java
 
@@ -2299,7 +2299,7 @@ to
 Use OOP (at least in JAVA)
 
 ##70 Separate Domain from Presentation
-You have GUI classes that contain domain logic.
+You have GUI classes that contain domain logic.   
 _Separate the domain logic into separate domain classes_
 ```java
 
@@ -2319,7 +2319,7 @@ to
 * Its worth is proved
 
 ##71 Extract Hierarchy
-You have a class that is doing too much work, at least in part through many conditional statements.
+You have a class that is doing too much work, at least in part through many conditional statements.   
 _Create a hierarchy of classes in which each subclass represents a special case_
 ```java
 	
@@ -2337,11 +2337,3 @@ to
 
 * A class as implementing one idea become implementing two or three or ten.
 * Keep the Single Responsibility Principle.
-
-##X
-```java
-```
-to
-```java
-```
-**Motivation**	
