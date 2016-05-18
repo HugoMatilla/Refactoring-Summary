@@ -1,53 +1,163 @@
 This is my summary of the "Refactoring: Improving the Design of Existing Code" by Martin Fowler. I use it while learning and as quick reference. It is not intended to be an standalone substitution of the book so if you really want to learn the concepts here presented, buy and read the book and use this repository as a reference and guide.
 
 If you are the publisher and think this repository should not be public, just write me an email at hugomatilla [at] gmail [dot] com and I will make it private.
+
+Contributions: Issues, comments and pull requests are super welcome :smiley:
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [3 Bad Smells in code](#3-bad-smells-in-code)
+	- [1 Duplicated code](#1-duplicated-code)
+	- [2 Long Method](#2-long-method)
+	- [3 Large Classes](#3-large-classes)
+	- [4 Long Parameter List](#4-long-parameter-list)
+	- [5 Divergent Change](#5-divergent-change)
+	- [6 Shotgun Surgery](#6-shotgun-surgery)
+	- [7 Feature Envy](#7-feature-envy)
+	- [8 Data Clumps](#8-data-clumps)
+	- [9 Primitive Obsession](#9-primitive-obsession)
+	- [10 Switch Statements](#10-switch-statements)
+	- [11 Parallel Inheritance Hierarchies](#11-parallel-inheritance-hierarchies)
+	- [12 Lazy Class](#12-lazy-class)
+	- [13 Speculative Generality](#13-speculative-generality)
+	- [14 Temporary Field](#14-temporary-field)
+	- [15 Message Chain](#15-message-chain)
+	- [16 Middle Man](#16-middle-man)
+	- [17 Inappropriate Intimacy](#17-inappropriate-intimacy)
+	- [18 Alternative Classes with Different Interfaces](#18-alternative-classes-with-different-interfaces)
+	- [19 Incomplete Library Class](#19-incomplete-library-class)
+	- [20 Data Class](#20-data-class)
+	- [21 Refused Bequest](#21-refused-bequest)
+	- [22 Comments](#22-comments)
+- [6 COMPOSING METHODS](#6-composing-methods)
+	- [1 Extract Method](#1-extract-method)
+	- [2 Inline Method](#2-inline-method)
+	- [3 Inline Temp](#3-inline-temp)
+	- [4 Replace Temp with Query](#4-replace-temp-with-query)
+	- [5 Introduce Explaining Variable](#5-introduce-explaining-variable)
+	- [6 Split Temporary Variable](#6-split-temporary-variable)
+	- [7 REMOVE ASSIGNMENTS TO PARAMETERS](#7-remove-assignments-to-parameters)
+	- [8 Replace Method with Method Object](#8-replace-method-with-method-object)
+	- [9 Substitute Algorithm](#9-substitute-algorithm)
+- [7 Moving features between elements](#7-moving-features-between-elements)
+	- [10 Move method](#10-move-method)
+	- [11 Move field](#11-move-field)
+	- [12 Extract Class](#12-extract-class)
+	- [13 Inline Class](#13-inline-class)
+	- [14 Hide Delegate](#14-hide-delegate)
+	- [15 Remove Middle Man](#15-remove-middle-man)
+	- [16 Introduce Foreign Method](#16-introduce-foreign-method)
+	- [17 Introduce Local Extension](#17-introduce-local-extension)
+- [8 ORGANIZING DATA](#8-organizing-data)
+	- [18 Self Encapsulate Field](#18-self-encapsulate-field)
+	- [19 Replace Data Value with Object](#19-replace-data-value-with-object)
+	- [20 Change Value to Reference](#20-change-value-to-reference)
+	- [21 Change Reference to Value](#21-change-reference-to-value)
+	- [22 Replace Array with Object](#22-replace-array-with-object)
+	- [23 Duplicate Observed Data](#23-duplicate-observed-data)
+	- [24 Change Unidirectional Association to Bidirectional](#24-change-unidirectional-association-to-bidirectional)
+	- [25 Change Bidirectional Association to Unidirectional](#25-change-bidirectional-association-to-unidirectional)
+	- [26 Replace Magic Number with Symbolic Constant](#26-replace-magic-number-with-symbolic-constant)
+	- [27 Encapsulate Field](#27-encapsulate-field)
+	- [28 Encapsulate Collection](#28-encapsulate-collection)
+	- [29 Remove Record with data class](#29-remove-record-with-data-class)
+	- [30 Replace Type Code with Class](#30-replace-type-code-with-class)
+	- [31 Replace Type Code with Subclasses](#31-replace-type-code-with-subclasses)
+	- [32 Replace Type Code with State/Strategy](#32-replace-type-code-with-statestrategy)
+	- [32 Replace Subclass with Fields](#32-replace-subclass-with-fields)
+- [9 SIMPLIFYING CONDITIONAL EXPRESSIONS](#9-simplifying-conditional-expressions)
+	- [33 Decompose Conditional](#33-decompose-conditional)
+	- [34 Consolidate Conditional Expression](#34-consolidate-conditional-expression)
+	- [35 Consolidate Duplicate Conditional Fragments](#35-consolidate-duplicate-conditional-fragments)
+	- [36 Remove Control Flag](#36-remove-control-flag)
+	- [37 Replace Nested Conditional with Guard Clauses](#37-replace-nested-conditional-with-guard-clauses)
+	- [38 Replace Conditional with Polymorphism](#38-replace-conditional-with-polymorphism)
+	- [39 Introduce Null Object](#39-introduce-null-object)
+	- [40 Introduce Assertion](#40-introduce-assertion)
+- [10 MAKING METHOD CALLS SIMPLER](#10-making-method-calls-simpler)
+	- [41 Rename method](#41-rename-method)
+	- [42 Add Parameter](#42-add-parameter)
+	- [43 Remove Parameter](#43-remove-parameter)
+	- [44 Separate Query from Modifier](#44-separate-query-from-modifier)
+	- [45 Parameterize Method](#45-parameterize-method)
+	- [46 Replace Parameter with Explicit Methods](#46-replace-parameter-with-explicit-methods)
+	- [47 Preserve Whole Object](#47-preserve-whole-object)
+	- [48 Replace Parameter with Method](#48-replace-parameter-with-method)
+	- [49 Introduce Parameter Object](#49-introduce-parameter-object)
+	- [50 Remove Setting Method](#50-remove-setting-method)
+	- [51 Hide Method](#51-hide-method)
+	- [52 Replace Constructor with Factory Method](#52-replace-constructor-with-factory-method)
+	- [53 Encapsulate Downcast](#53-encapsulate-downcast)
+	- [54 Replace Error Code with Exception](#54-replace-error-code-with-exception)
+	- [55 Replace Exception with Test](#55-replace-exception-with-test)
+- [11 DEALING WITH GENERALIZATION](#11-dealing-with-generalization)
+	- [56 Pull up field](#56-pull-up-field)
+	- [57 Pull Up Method](#57-pull-up-method)
+	- [58 Pull Up Constructor Body](#58-pull-up-constructor-body)
+	- [59 Push Down Method](#59-push-down-method)
+	- [60 Push Down Field](#60-push-down-field)
+	- [61 Extract Subclass](#61-extract-subclass)
+	- [62 Extract Superclass](#62-extract-superclass)
+	- [63 Extract Interface](#63-extract-interface)
+	- [64 Collapse Hierarchy](#64-collapse-hierarchy)
+	- [65 Form Template Method](#65-form-template-method)
+	- [66 Replace Inheritance with Delegation](#66-replace-inheritance-with-delegation)
+	- [67 Replace Delegation with Inheritance](#67-replace-delegation-with-inheritance)
+- [12 BIG REFACTORINGS](#12-big-refactorings)
+	- [68 Tease Apart Inheritance](#68-tease-apart-inheritance)
+	- [69 Convert Procedural Design to Objects](#69-convert-procedural-design-to-objects)
+	- [70 Separate Domain from Presentation](#70-separate-domain-from-presentation)
+	- [71 Extract Hierarchy](#71-extract-hierarchy)
+
+<!-- /TOC -->
+
 #3 Bad Smells in code
-### Duplicated code
+###1 Duplicated code
 Same code structure in more than one place.
-### Long Method
+###2 Long Method
 The longer a procedure is the more difficult is to understand.
-### Large Classes
+###3 Large Classes
 When a class is trying to do too much, duplicated code cannot be far behind.
-### Long Parameter List
+###4 Long Parameter List
 The are hard to understand, inconsistent and difficult to use.
-### Divergent Change
+###5 Divergent Change
 When one class is commonly changed in different ways for different reasons.
-### Shotgun Surgery
+###6 Shotgun Surgery
 When every time you make a kind of change, you have to make a lot of little changes to a lot of different classes.
-### Feature Envy
+###7 Feature Envy
 A method that seems more interested in a class other than the one it actually is in.
-### Data Clumps
+###8 Data Clumps
 Bunches of data(fields, parameters...) that hang around together.
-### Primitive Obsession
+###9 Primitive Obsession
 Using primitives types instead of small objects.
-### Switch Statements
+###10 Switch Statements
 The same switch statement scattered about a program in different places. Use polymorphism.
-### Parallel Inheritance Hierarchies
+###11 Parallel Inheritance Hierarchies
 Every time you make a subclass of one class, you also have to make a subclass of another.
-### Lazy Class
+###12 Lazy Class
 A class that isn't doing enough to pay for itself should be eliminated.
-### Speculative Generality
+###13 Speculative Generality
 All sorts of hooks and special cases to handle things that aren't required.
-### Temporary Field
+###14 Temporary Field
 An instance variable that is set only in certain circumstances.
-### Message Chain
+###15 Message Chain
 When a client asks one object for another object, which the client then asks for yet another object...
-### Middle Man
+###16 Middle Man
 When an object delegates much of its functionality.
-### Inappropriate Intimacy
+###17 Inappropriate Intimacy
 When classes access to much to another classes.
-### Alternative Classes with Different Interfaces 
+###18 Alternative Classes with Different Interfaces
 Classes with methods that look to similar.
-### Incomplete Library Class
+###19 Incomplete Library Class
 When we need extra features in libraries.
-### Data Class
+###20 Data Class
 Don't allow manipulation in Data Classes. Use encapsulation and immutability.
-### Refused Bequest
+###21 Refused Bequest
 Subclasses that don't make uses of parents methods.
-### Comments
+###22 Comments
 Not all comments but the ones that are there because the code is bad.
 
-#6 Composing methods
+#6 COMPOSING METHODS
 ##1 Extract Method
 
 You have a code fragment that can be grouped together.
@@ -62,7 +172,7 @@ You have a code fragment that can be grouped together.
 	}
 ```
 
-to 
+to
 
 ```java
 
@@ -70,7 +180,7 @@ to
 		printBanner();
 		printDetails(amount);
 	}
-	
+
 	void printDetails (double amount) {
 		System.out.println ("name:" + _name);
 	System.out.println ("amount" + amount);
@@ -82,26 +192,13 @@ to
 * Increases the chances that other methods can use a method
 * Allows the higher-level methods to read more like a series of comments
 
-**Mechanics**
-
-* Create a new method, and name it after the intention of the method
-* Copy the extracted code into the new method
-* Scan for references to any variables local in scope
-* If temporary variables are only in the extracted code set them as temporary variables.
-* If temporary variables are modified, return its modified value. If this is not possible try
-	* [6 Split Temporary Variable]()
-	* [4 Replace Temp with Query]()
-* If variables are read, pass them in the constructor
-* Replace
-* Compile and test.
-
 ```java
 
 	void printOwing(double previousAmount) {
 		Enumeration e = _orders.elements();
 		double outstanding = previousAmount * 1.2;
 		printBanner();
-		
+
 		// calculate outstanding
 		while (e.hasMoreElements()) {
 			Order each = (Order) e.nextElement();
@@ -109,7 +206,7 @@ to
 		}
 		printDetails(outstanding);
 	}
-```	
+```
 
 to
 
@@ -124,7 +221,7 @@ to
 	double getOutstanding(double initialValue) {
 		double result = initialValue;
 		Enumeration e = _orders.elements();
-		
+
 		while (e.hasMoreElements()) {
 			Order each = (Order) e.nextElement();
 			result += each.getAmount();
@@ -161,14 +258,6 @@ to
 * If group of methods are badly factored and grouping them makes it clearer
 
 
-**Mechanics**
-
-* Check that the method is not polymorphic.
-* Find all calls to the method.
-* Replace each call with the method body.
-* Compile and test.
-* Remove the method definition
-
 ##3 Inline Temp
 You have a temp that is assigned to once with a simple expression, and the temp is getting in the way of other refactorings.
 
@@ -178,27 +267,21 @@ You have a temp that is assigned to once with a simple expression, and the temp 
 	return (basePrice > 1000)
 ```
 
-to 
+to
 
 ```java
-	
+
 	return (anOrder.basePrice() > 1000)
-```	
+```
 **Motivation**
 
-* Use it with [4 Replace Temp with Query]()
+* Use it with [4 Replace Temp with Query](#4-replace-temp-with-query)
 
-**Mechanics**
-
-* Declare the temp as final if it isn't already, and compile.
-* Find all references to the temp and replace them with the right-hand side of the assignment.
-* Compile and test after each change.
-* Remove the declaration
 
 ##4 Replace Temp with Query
 You are using a temporary variable to hold the result of an expression.
 ```java
-	
+
 	double basePrice = _quantity * _itemPrice;
 	if (basePrice > 1000)
 		return basePrice * 0.95;
@@ -222,23 +305,12 @@ to
 **Motivation**
 
 * Replacing the temp with a query method, any method in the class can get at the information.
-* Is a vital step before [1 Extract Method]()
-
-**Mechanics**
-
-* Look for a temporary variable that is assigned to once. For more than [6 Split Temporary Variable]()
-* Declare the temp as final.
-* Compile.
-* Extract the right-hand side of the assignment into a method.
-	* Initially mark the method as private
-	* Ensure there are no side effects (does not modify any object) or use [Separate Query from Modifier]()
-* Compile and test
-* [3 Inline Temp]() on the temp.
+* Is a vital step before [1 Extract Method](#1-extract-method)
 
 ##5 Introduce Explaining Variable
 You have a complicated expression
 ```java
-	
+
 	if ( (platform.toUpperCase().indexOf("MAC") > -1) &&
 		(browser.toUpperCase().indexOf("IE") > -1) &&
 		wasInitialized() && resize > 0 )
@@ -249,7 +321,7 @@ You have a complicated expression
 to
 
 ```java
-	
+
 	final boolean isMacOs = platform.toUpperCase().indexOf("MAC") >-1;
 	final boolean isIEBrowser = browser.toUpperCase().indexOf("IE") >-1;
 	final boolean wasResized = resize > 0;
@@ -257,20 +329,12 @@ to
 		// do something
 	}
 
-```	
+```
 
 **Motivation**
 
 * When expressions are hard to read
 
-**Mechanics**
-
-* Declare a final temporary variable, and set it to the result of part of the complex expression.
-* Replace the result part of the expression with the value of the temp.
-* Compile and test.
-* Repeat for other parts of the expression.
-
-If using [1 Extract Method]() cost same effort use it, it will make available this methods out from the method scope. 
 ##6 Split Temporary Variable
 You have a temporary variable assigned to more than once, but is not a loop variable nor a collecting temporary variable.
 
@@ -291,29 +355,20 @@ to
 ```
 
 **Motivation**
- 
+
 * Variables should not have more than one responsibility.
 * Using a temp for two different things is very confusing for the reader.
 
-**Mechanics**
-
-* Change the name of a temp at its declaration and its first assignment. (No if  is of the  `i = i + x`)
-* Declare the new temp as final.
-* Change all references of the temp up to its second assignment.
-* Declare the temp at its second assignment.
-* Compile and test.
-* Repeat in stages, each
-
-##7 Remove Assignments to Parameters
+##7 REMOVE ASSIGNMENTS TO PARAMETERS
 The code assign to a parameter
 ```java
-	
+
 	int discount (int inputVal, int quantity, int yearToDate) {
 		if (inputVal > 50) inputVal -= 2;
 ```
 to
 ```java
-	
+
 	int discount (int inputVal, int quantity, int yearToDate) {
 		int result = inputVal;
 		if (inputVal > 50) result -= 2;
@@ -323,13 +378,6 @@ to
 
 * You can change the internals of  object is passed but do not point to another object.
 * Use only the parameter to represent what has been passed.
-
-**Mechanics**
-
-* Create a temporary variable for the parameter.
-* Replace all references to the parameter, made after the assignment, to the temporary variable.
-* Change the assignment to assign to the temporary variable.
-* Compile and test.
 
 ##8 Replace Method with Method Object
 You have a long method that uses local variables in such a way that you cannot apply Extract Method.
@@ -352,14 +400,14 @@ to
 		double price(){
 			return new PriceCalculator(this).compute()
 		}
-	}	
+	}
 
 	class PriceCalculato...
 	compute(){
 		double primaryBasePrice;
 		double secondaryBasePrice;
 		double tertiaryBasePrice;
-		// long computation;	
+		// long computation;
 		return ...
 	}
 
@@ -368,17 +416,6 @@ to
 **Motivation**
 
 * When a method has lot of local variables and applying decomposition is not possible
-
-**Mechanics**
-
-* Create a new class, name it after the method.
-*  Give the new class a final field for the object that hosted the original method (the source object) and a field for each temporary variable and each parameter in the method.
-* Give the new class a constructor that takes the source object and each parameter.
-* Give the new class a method named "compute."
-* Copy the body of the original method into compute. Use the source object field for any
-invocations of methods on the original object.
-* Compile.
-* Replace the old method with one that creates the new object and calls compute.
 
 _This sample does not really needs this refactoring, but shows the way to do it._
 ```java
@@ -393,7 +430,7 @@ _This sample does not really needs this refactoring, but shows the way to do it.
 			// and so on.
 			return importantValue3 - 2 * importantValue1;
 		}
-	}	
+	}
 ```
 to
 ```java
@@ -451,7 +488,7 @@ You want to replace an algorithm with one that is clearer.
 ```
 to
 ```java
-	
+
 	String foundPerson(String[] people){
 		List candidates = Arrays.asList(new String[] {"Don", "John","Kent"});
 	for (int i = 0; i<people.length; i++)
@@ -462,18 +499,13 @@ to
 ```
 
 **Motivation**
- 
+
 * Break down something complex into simpler pieces.
 * Makes easier apply changes to the algorithm.
 * Substituting a large, complex algorithm is very difficult; making it simple can make the substitution tractable.
 
-**Mechanics**
-
-* Prepare your alternative algorithm.
-* Run the new algorithm against your tests until it passes.
 
 #7 Moving features between elements
-
 ##10 Move method
 A method is, or will be, using or used by more features of another class than the class on which it is defined.  
 
@@ -503,21 +535,7 @@ to
 
 When classes do to much work or when collaborate too much and are highly coupled
 
-**Mechanics**
-
-* Examine all features used by the source method that are defined ont he source class. Consider whether they also should be moved
-* Check the sub and super-classes for other declarations
-*  Declare the method in the target class
-* Copy the code to the target. Adapt it to work.
-* Compile
-* Determine how to reference the target from the source
-* Turn the source method to a delegating one
-* Compile and test
-* Decide to remove or keep as delegate the source method
-* If removed, replace all references to the target method
-* Compile and test
-
-##11 Move field 
+##11 Move field
 A field is, or will be, used by another class more than the class on which it is defined.
 _Create a new field in the target class, and change all its users._
 
@@ -543,18 +561,8 @@ to
 
 **Motivation**
 
-If a field is used mostly by outer classes and before [12 Extract Class]() 
+If a field is used mostly by outer classes and before [12 Extract Class](#12-extract-class)
 
-**Mechanics**
-
-* If the field is public, use [X Encapsulate Field]()
-* Compile and test
-* Create a field in the target (with accessors)
-* Compile and test
-* Determine how to reference it from the source
-* Remove it on the source
-* Replace all references on the source with the ones on the target
-* Compile and test
 
 ##12 Extract Class
 You have one class doing work that should be done by two.
@@ -591,18 +599,6 @@ _Split them when_:
 * subsets of methods seem to be together
 * subsets of data usually change together or depend on each other
 
-**Mechanics**
-
-* Decide how to split the responsibilities of the class.
-* Create a new class to express the split-off responsibilities.
-* Make a link from the old to the new class.
-* Use [11 Move Field]() on each field you wish to move.
-* Compile and test.
-* Use [10 Move Method]() to move methods over from old to new. Start with lower-level methods.
-* Compile and test.
-* Review and reduce the interfaces of each class.
-* Decide whether to expose the new class. If you do expose the class, decide whether to expose it as a reference object or as an immutable value object.
-
 ##13 Inline Class
 A class isn't doing very much.
 _Move all its features into another class and delete it._
@@ -635,15 +631,6 @@ to
 
 After refactoring normally there are a bunch of responsibilities moved out of the class, letting the class with little left.
 
-**Mechanics**
-
-* Declare the public protocol of the source class onto the absorbing class. Delegate all these methods to the source class.
-	* _If a separate interface makes sense for the source class methods, use Extract Interface before inlining._
-* Change all references from the source class to the absorbing class.
-* Compile and test.
-* Use [10 Move Method]() and [11 Move Field]() to move features from the source class to the absorbing class.
-* Hold a short, simple funeral service.
-
 ##14 Hide Delegate
 A client is calling a delegate class of an object.  
 _Create methods on the server to hide the delegate._
@@ -651,7 +638,7 @@ _Create methods on the server to hide the delegate._
 
 	class ClientClass {
 		//Dependencies
-		Person person = new Person() 
+		Person person = new Person()
 		Department department = new Department()
 		person.doSomething()
 		department.doSomething()
@@ -682,12 +669,12 @@ _The solution_
 	class Server{
 		Delegate delegate = new Delegate()
 		void doSomething(){
-			delegate.doSomething()	
+			delegate.doSomething()
 		}
 	}
 	// The delegate is hidden to the client class.
 	// Changes won't be propagated to the client they will only affect the server
-	class Delegate{ 
+	class Delegate{
 		void doSomething(){...}
 	}
 
@@ -695,17 +682,8 @@ _The solution_
 
 **Motivation**
 
-Key of encapsulation. 
+Key of encapsulation.
 Classes should know as less as possible of other classes.
-
-**Mechanics**
-
-* For each method on the delegate, create a simple delegating method on the server.
-* Adjust the client to call the server.
-	* If the client is not in the same package as the server, consider changing the delegate method's access to package visibility.
-* Compile and test
-* If no client needs to access the delegate anymore, remove the server's accessor for the delegate.
-* Compile and test.
 
 `> manager = john.getDepartment().getManager();`
 ```java
@@ -737,7 +715,7 @@ to
 
 `> manager = john.getManager();`
 ```java
-	
+
 	class Person {
 		...
 		public Person getManager() {
@@ -767,7 +745,7 @@ to
 
 	class ClientClass {
 		//Dependencies
-		Person person = new Person() 
+		Person person = new Person()
 		Department department = new Department()
 		person.doSomething()
 		department.doSomething()
@@ -779,23 +757,17 @@ to
 
 When the "Middle man" (the server) does to much is time for the client to call the delegate directly.
 
-**Mechanics**
-
-* Create an accessor for the delegate.
-* For each client use of a delegate method, remove the method from the server and replace the call in the client to call method on the delegate.
-* Compile and test
-
 ##16 Introduce Foreign Method
 A server class you are using needs an additional method, but you can't modify the class.  
 _Create a method in the client class with an instance of the server class as its first argument._
 
 ```java
-	
+
 	Date newStart = new Date(previousEnd.getYear(),previousEnd.getMonth(),previousEnd.getDate()+1);
 ```
 to
 ```java
-	
+
 	Date newStart = nextDay(previousEnd);
 
 	private static Date nextDay(Date date){
@@ -807,20 +779,13 @@ to
 
 When there is a lack of a method in class that you use a lot and you can not change that class.
 
-**Mechanics**
-
-* Create a method in the client class that does what you need.
-	* The method should not access any of the features of the client class. If it needs a value, send it in as a parameter.
-* Make an instance of the server class the first parameter.
-* Comment the method as "foreign method; should be in server."
-
 ##17 Introduce Local Extension
-A server class you are using needs several additional methods, but you can't modify the class. 
+A server class you are using needs several additional methods, but you can't modify the class.
 _Create a new class that contains these extra methods. Make this extension class a subclass or a wrapper of the original._
 ```java
 
 	class ClientClass(){
-		
+
 		Date date = new Date()
 		nextDate = nextDay(date);
 
@@ -831,7 +796,7 @@ _Create a new class that contains these extra methods. Make this extension class
 ```
 to
 ```java
-	
+
 	class ClientClass() {
 		MfDate date = new MfDate()
 		nextDate = nextDate(date)
@@ -846,26 +811,15 @@ to
 
 **Motivation**
 
-When plenty of [foreign methods]() need to be added to a class.
+When plenty of [16 Introduce Foreign Method](#16-introduce-foreign-method) need to be added to a class.
 
-**Mechanics**
 
-* Create an extension class either as a subclass or a wrapper of the original.
-* Add converting constructors to the extension.
-	* A constructor takes the original as an argument. 
-	* The subclass version calls an appropriate superclass constructor 
-	* The wrapper version sets the delegate field to the argument.
-* Add new features to the extension.
-* Replace the original with the extension where needed.
-* Move any foreign methods defined for this class onto the extension.
-
-# Organizing Data
-
-##18 Self Encapsulate Field 
+#8 ORGANIZING DATA
+##18 Self Encapsulate Field
 You are accessing a field directly, but the coupling to the field is becoming awkward.   
 _Create getting and setting methods for the field and use only those to access the field._  
 ```java
-	
+
 	private int _low, _high;
 	boolean includes (int arg) {
 		return arg >= _low && arg <= _high;
@@ -874,7 +828,7 @@ _Create getting and setting methods for the field and use only those to access t
 to
 
 ```java
-	
+
 	private int _low, _high;
 	boolean includes (int arg) {
 		return arg >= getLow() && arg <= getHigh();
@@ -886,12 +840,12 @@ to
 **Motivation**  
 Allows a subclass to override how to get that information with a method and that it supports more flexibility in managing the data, such as lazy initialization.
 
-##19 Replace Data Value with Object 
+##19 Replace Data Value with Object
 You have a data item that needs additional data or behavior.  
 _Turn the data item into an object_
 
 ```java
-	
+
 	class Order...{
 		private String _customer;
 		public Order (String customer) {
@@ -901,12 +855,12 @@ _Turn the data item into an object_
 ```
 to
 ```java
-	
+
 	class Order...{
 		public Order (String customer) {
 			_customer = new Customer(customer);
 		}
-	}	
+	}
 
 	class Customer {
 		public Customer (String name) {
@@ -921,12 +875,12 @@ Simple data items  aren't so simple anymore.
 You have a class with many equal instances that you want to replace with a single object.  
 _Turn the object into a reference object._
 ```java
-	
+
 	class Order...{
 		public Order (String customer) {
 			_customer = new Customer(customer);
 		}
-	}	
+	}
 
 	class Customer {
 		public Customer (String name) {
@@ -936,7 +890,7 @@ _Turn the object into a reference object._
 ```
 to
 ```java
-	
+
 	//Use Factory Method
 	class Customer...
 		static void loadCustomers() {
@@ -956,14 +910,14 @@ Reference objects are things like customer or account. Each object stands for on
 
 ##21 Change Reference to Value
 You have a reference object that is small, immutable, and awkward to manage.  
-_Turn it into a value object_ 
+_Turn it into a value object_
 ```java
 
 	new Currency("USD").equals(new Currency("USD")) // returns false
 ```
 to
 ```java
-	
+
 	new Currency("USD").equals(new Currency("USD")) // now returns true
 ```
 **Motivation**  
@@ -997,7 +951,7 @@ _Copy the data to a domain object. Set up an observer to synchronize the two pie
 You have two classes that need to use each other's features, but there is only a one-way link.  
 _Add back pointers, and change modifiers to update both sets_
 ```java
-	
+
 	class Order...
 		Customer getCustomer() {
 			return _customer;
@@ -1010,7 +964,7 @@ _Add back pointers, and change modifiers to update both sets_
 ```
 to
 ```java
-	
+
 	class Order...
 		Customer getCustomer() {
 			return _customer;
@@ -1027,7 +981,7 @@ to
 				arg.setCustomer(this);
 			}
 			private Set _orders = new HashSet();
-			
+
 			Set friendOrders() {
 				/** should only be used by Order */
 				return _orders;
@@ -1053,7 +1007,7 @@ to
 			arg.removeCustomer(this);
 		}
 	}
-``` 
+```
 **Motivation**  
 When the object referenced needs access access to the object that refer to it.
 
@@ -1061,7 +1015,7 @@ When the object referenced needs access access to the object that refer to it.
 You have a two-way association but one class no longer needs features from the other.  
 _Drop the unneeded end of the association_  
 **Motivation**  
-If Bidirectional association is not needed, reduce complexity, handle zombie objects, eliminate interdependency 
+If Bidirectional association is not needed, reduce complexity, handle zombie objects, eliminate interdependency
 ##26 Replace Magic Number with Symbolic Constant
 You have a literal number with a particular meaning.  
 _Create a constant, name it after the meaning, and replace the number with it_
@@ -1103,7 +1057,7 @@ You should never make your data public.
 A method returns a collection.  
 _Make it return a read-only view and provide add/remove methods_
 ```java
-	
+
 	class Person {
 		Person (String name){
 			HashSet set new HashSet()
@@ -1170,15 +1124,15 @@ Statically type checking.
 ##31 Replace Type Code with Subclasses
 You have an immutable type code that affects the behavior of a class.  
 _Replace the type code with subclasses._
-```java	
-	
+```java
+
 	class Employee...
 		private int _type;
-		
+
 		static final int ENGINEER = 0;
 		static final int SALESMAN = 1;
 		static final int MANAGER = 2;
-		
+
 		Employee (int type) {
 			_type = type;
 		}
@@ -1205,8 +1159,8 @@ to
 
 * Execute different code depending on the value of a type.
 * When each type code object has unique features.
-* Structure to implement [XX Replace Conditional with Polymorphism]()
-* Use of [30 Replace Type Code with Class]() when there is a conditional statement
+* Structure to implement [38 Replace Conditional with Polymorphism](#38-replace-conditional-with-polymorphism)
+* Use of [30 Replace Type Code with Class](#30-replace-type-code-with-class)
 
 ##32 Replace Type Code with State/Strategy
 You have a type code that affects the behavior of a class, but you cannot use subclassing.  
@@ -1215,7 +1169,7 @@ _Replace the type code with a state object_
 
 	class Employee {
 		private int _type;
-	
+
 		static final int ENGINEER = 0;
 		static final int SALESMAN = 1;
 		static final int MANAGER = 2;
@@ -1235,12 +1189,12 @@ _Replace the type code with a state object_
 					throw new RuntimeException("Incorrect Employee");
 				}
 			}
-		}	
+		}
 	}
 ```
 to
 ```java
-	
+
 	class Employee...
 		static final int ENGINEER = 0;
 		static final int SALESMAN = 1;
@@ -1279,14 +1233,14 @@ to
 ```
 **Motivation**  
 
-* Similar to [X Replace Type Code with Subclasses](), but can be used if the type code changes during the life of the object or if another reason prevents subclassing. 
+* Similar to [31 Replace Type Code with Subclasses](#31-replace-type-code-with-subclasses), but can be used if the type code changes during the life of the object or if another reason prevents subclassing.
 * It uses either the state or strategy pattern
 
 ##32 Replace Subclass with Fields
 You have subclasses that vary only in methods that return constant data.  
 _Change the methods to superclass fields and eliminate the subclasses_
 ```java
-	
+
 	abstract class Person {
 		abstract boolean isMale();
 		abstract char getCode();
@@ -1334,20 +1288,20 @@ to
 * Remove such subclasses completely by putting fields in the superclass.
 * Remove the extra complexity of the subclasses.
 
-#9 Simplifying Conditional Expressions
+#9 SIMPLIFYING CONDITIONAL EXPRESSIONS
 
 ##33 Decompose Conditional
 You have a complicated conditional (if-then-else) statement.     
 _Extract methods from the condition, then part, and else parts_
 ```java
-	
+
 	if (date.before (SUMMER_START) || date.after(SUMMER_END))
 		charge = quantity * _winterRate + _winterServiceCharge;
 	else charge = quantity * _summerRate;
 ```
 to
 ```java
-	
+
 	if (notSummer(date))
 		charge = winterCharge(quantity);
 	else charge = summerCharge (quantity);
@@ -1355,13 +1309,13 @@ to
 **Motivation**  
 
 * Highlight the condition and make it clearly what you are branching on.
-* Highlight the reason for the branching 
+* Highlight the reason for the branching
 
 ##34 Consolidate Conditional Expression
 You have a sequence of conditional tests with the same result.  
 _Combine them into a single conditional expression and extract it_
 ```java
-	
+
 	double disabilityAmount() {
 	if (_seniority < 2) return 0;
 	if (_monthsDisabled > 12) return 0;
@@ -1378,14 +1332,14 @@ to
 **Motivation**  
 
 * Makes the check clearer by showing that you are really making a single check
-* Sets you up for [X Extract Method]().
+* Sets you up for [1 Extract Method](#1-extract-method).
 * Clarify your code (replaces a statement of what you are doing with why you are doing it.)
 
 ##35 Consolidate Duplicate Conditional Fragments
 The same fragment of code is in all branches of a conditional expression.  
 _Move it outside of the expression._
 ```java
-	
+
 	if (isSpecialDeal()) {
 		total = price * 0.95;
 		send();
@@ -1414,7 +1368,7 @@ Makes clearer what varies and what stays the same.
 You have a variable that is acting as a control flag for a series of boolean expressions.  
 _Use a break or return instead_
 ```java
-	
+
 	void checkSecurity(String[] people) {
 		boolean found = false;
 			for (int i = 0; i < people.length; i++) {
@@ -1456,7 +1410,7 @@ to
 A method has conditional behavior that does not make clear the normal path of execution.  
 _Use guard clauses for all the special cases_
 ```java
-	
+
 	double getPayAmount() {
 		double result;
 		if (_isDead) result = deadAmount();
@@ -1472,7 +1426,7 @@ _Use guard clauses for all the special cases_
 ```
 to
 ```java
-	
+
 	double getPayAmount() {
 		if (_isDead) return deadAmount();
 		if (_isSeparated) return separatedAmount();
@@ -1482,10 +1436,10 @@ to
 ```
 **Motivation**  
 
-* If the condition is an unusual condition, check the condition and return if the condition is true. 
+* If the condition is an unusual condition, check the condition and return if the condition is true.
 * This kind of check is often called a **guard clause** [Beck].
-* If you are using an if-then-else construct you are giving equal weight to the if leg and the else leg. 
-* This communicates to the reader that the legs are equally likely and important. 
+* If you are using an if-then-else construct you are giving equal weight to the if leg and the else leg.
+* This communicates to the reader that the legs are equally likely and important.
 * Instead the **guard clause** says, _"This is rare, and if it happens, do something and get out."_
 
 ##38 Replace Conditional with Polymorphism
@@ -1495,7 +1449,7 @@ _Move each leg of the conditional to an overriding method in a subclass. Make th
 
 	class Employee {
 		private int _type;
-	
+
 		static final int ENGINEER = 0;
 		static final int SALESMAN = 1;
 		static final int MANAGER = 2;
@@ -1515,7 +1469,7 @@ _Move each leg of the conditional to an overriding method in a subclass. Make th
 					throw new RuntimeException("Incorrect Employee");
 				}
 			}
-		}	
+		}
 	}
 ```
 to
@@ -1560,7 +1514,7 @@ to
 
 	class NullCusomer extends Customer {}
 ```
-**Motivation** 
+**Motivation**
 
 * The object, depending on its type, does the right thing. Null objects should also apply this rule.
 * Use **Null Object Pattern** is the little brother of **Special Case Pattern**.
@@ -1569,10 +1523,10 @@ to
 A section of code assumes something about the state of the program.  
 _Make the assumption explicit with an assertion_
 ```java
-	
+
 	double getExpenseLimit() {
 		// should have either expense limit or a primary project
-		return (_expenseLimit != NULL_EXPENSE) ? 
+		return (_expenseLimit != NULL_EXPENSE) ?
 			_expenseLimit:
 			_primaryProject.getMemberExpenseLimit();
 	}
@@ -1595,7 +1549,7 @@ to
 * As communication  aids: they help the reader understand the assumptions the code is making.
 * As debugging aids: assertions can help catch bugs closer to their origin.
 
-#10 Making Method Calls Simpler
+#10 MAKING METHOD CALLS SIMPLER
 ##41 Rename method
 The name of a method does not reveal its purpose.  
 _Change the name of the method_
@@ -1660,7 +1614,7 @@ to
 ```
 **Motivation**    
 Removes duplicate code and increases flexibility.
-##46 Replace Parameter with Explicit Methods 
+##46 Replace Parameter with Explicit Methods
 You have a method that runs different code depending on the values of an enumerated parameter.  
 _Create a separate method for each value of the parameter_
 ```java
@@ -1687,9 +1641,9 @@ to
 		_width = arg;
 	}
 ```
-**Motivation** 
+**Motivation**
 
-* Avoid the conditional behavior 
+* Avoid the conditional behavior
 * Gain compile time checking
 * Clearer Interface
 
@@ -1697,7 +1651,7 @@ to
 You are getting several values from an object and passing these values as parameters in a method call.  
 _Send the whole object instead_
 ```java
-	
+
 	int low = daysTempRange().getLow();
 	int high = daysTempRange().getHigh();
 	withinPlan = plan.withinRange(low, high);
@@ -1707,7 +1661,7 @@ to
 
 	withinPlan = plan.withinRange(daysTempRange());
 ```
-**Motivation** 
+**Motivation**
 
 * Make parameters list robust to changes
 * Make code more readeable
@@ -1718,18 +1672,18 @@ to
 An object invokes a method, then passes the result as a parameter for a method. The receiver can also invoke this method.  
 _Remove the parameter and let the receiver invoke the method_
 ```java
-	
+
 	int basePrice = _quantity * _itemPrice;
 	discountLevel = getDiscountLevel();
 	double finalPrice = discountedPrice (basePrice, discountLevel);
 ```
 to
 ```java
-	
+
 	int basePrice = _quantity * _itemPrice;
 	double finalPrice = discountedPrice (basePrice);
 ```
-**Motivation** 
+**Motivation**
 
 * If a method can get a value that is passed in as parameter by another means, it should.
 * If the receiving method can make the same calculation (does not reference any of the parameters of the calling method)
@@ -1739,7 +1693,7 @@ to
 You have a group of parameters that naturally go together.  
 _Replace them with an object_
 ```java
-	
+
 	class Customer{
 		amountInvoicedIn (start : Date, end : Date)
 		amountReceivedIn (start : Date, end : Date)
@@ -1748,14 +1702,14 @@ _Replace them with an object_
 ```
 to
 ```java
-	
+
 	class Customer{
 		amountInvoicedIn (: DateRange)
 		amountReceivedIn (: DateRange)
 		amountOverdueIn (: DateRange)
 	}
 ```
-**Motivation** 
+**Motivation**
 
 * Reduces the size of the parameter list
 * Make the code more consistent
@@ -1790,7 +1744,7 @@ _Make the method private_
 ```
 to
 ```java
-	
+
 	class Employee{
 		private method()
 	}
@@ -1802,14 +1756,14 @@ Whenever a method is not needed outside its class it should be hidden
 You want to do more than simple construction when you create an object.  
 _Replace the constructor with a factory method_
 ```java
-	
+
 	Employee (int type) {
 		_type = type;
 	}
 ```
 to
 ```java
-	
+
 	static Employee create(int type) {
 		return new Employee(type);
 	}
@@ -1829,7 +1783,7 @@ _Move the downcast to within the method_
 ```
 to
 ```java
-	
+
 	Reading lastReading() {
 		return (Reading) readings.lastElement();
 	}
@@ -1854,7 +1808,7 @@ _Throw an exception instead_
 ```
 to
 ```java
-	
+
 	void withdraw(int amount) throws BalanceException {
 		if (amount > _balance)
 			throw new BalanceException();
@@ -1867,7 +1821,7 @@ When a program that spots an error can't figure out what to do about it. It need
 You are throwing a checked exception on a condition the caller could have checked first.   
 _Change the caller to make the test first_
 ```java
-	
+
 	double getValueForPeriod (int periodNumber) {
 		try {
 			return _values[periodNumber];
@@ -1878,20 +1832,20 @@ _Change the caller to make the test first_
 ```
 to
 ```java
-	
+
 	double getValueForPeriod (int periodNumber) {
-		if (periodNumber >= _values.length) 
+		if (periodNumber >= _values.length)
 			return 0;
 		return _values[periodNumber];
 }
 ```
 **Motivation**
 
-* Do not overuse Exceptions they should be used for exceptional behavior (behavior that is unexpected). 
+* Do not overuse Exceptions they should be used for exceptional behavior (behavior that is unexpected).
 * Do not use them as substitute for conditional tests.
 * Check expected wrong conditions before before calling the operation.
 
-#11 Dealing with Generalization
+#11 DEALING WITH GENERALIZATION
 ##56 Pull up field
 Two subclasses have the same field.   
 _Move the field to the superclass_   
@@ -1906,7 +1860,7 @@ _Move the field to the superclass_
 ```
 to
 ```java
-	
+
 	Employee{
 		String name;
 	}
@@ -1915,8 +1869,8 @@ to
 	Engineer extends Employee{
 	}
 
-```	
-**Motivation**	
+```
+**Motivation**
 
 * Removes the duplicate data declaration.
 * Allows  to move  behavior from the subclasses to the superclass.
@@ -1935,7 +1889,7 @@ _Move them to the superclass_
 ```
 to
 ```java
-	
+
 	Employee{
 		String getName();
 	}
@@ -1944,10 +1898,10 @@ to
 	Engineer extends Employee{
 	}
 
-```	
-**Motivation**	
+```
+**Motivation**
 
-* Eliminates duplicated behavior. 
+* Eliminates duplicated behavior.
 
 ##58 Pull Up Constructor Body
 You have constructors on subclasses with mostly identical bodies.  
@@ -1960,26 +1914,26 @@ _Create a superclass constructor; call this from the subclass methods_
 		_id = id;
 		_grade = grade;
 	}
-	
+
 ```
 to
 ```java
-	
+
 	public Manager (String name, String id, int grade) {
 		super (name, id);
 		_grade = grade;
 	}
-```	
-**Motivation**	
+```
+**Motivation**
 
-* Constructors are not the same as methods. 
-* Eliminates duplicated behavior. 
+* Constructors are not the same as methods.
+* Eliminates duplicated behavior.
 
 ##59 Push Down Method
 Behavior on a superclass is relevant only for some of its subclasses.   
 _Move it to those subclasses._   
 ```java
-	
+
 	Employee{
 		int getQuota();
 	}
@@ -1990,20 +1944,20 @@ _Move it to those subclasses._
 ```
 to
 ```java
-	
+
 	Salesman extends Employee{
 		int getQuota();
 	}
 	Engineer extends Employee{
 	}
-```	
-**Motivation**	
+```
+**Motivation**
 When a method makes only sense in the subclass.
 ##60 Push Down Field
 A field is used only by some subclasses.  
 _Move the field to those subclasses_
 ```java
-	
+
 	Employee{
 		int quota;
 	}
@@ -2014,20 +1968,20 @@ _Move the field to those subclasses_
 ```
 to
 ```java
-	
+
 	Salesman extends Employee{
 		int quota;
 	}
 	Engineer extends Employee{
 	}
-```	
-**Motivation**	
+```
+**Motivation**
 When a field makes only sense in the subclass.
 ##61 Extract Subclass
 A class has features that are used only in some instances.  
 _Create a subclass for that subset of features_  
 ```java
-	
+
 	JobItem	{
 		getTotalPrices()
 		getUnitPrice()
@@ -2045,14 +1999,14 @@ to
 		getUnitPrice()
 		getEmployee()
 	}
-```	
-**Motivation**	
+```
+**Motivation**
 When a class has behavior used for some instances of the class and not for others.
 ##62 Extract Superclass
 You have two classes with similar features.   
 _Create a superclass and move the common features to the superclass_  
 ```java
-	
+
 	Department{
 		getTotalAnnualCost()
 		getName()
@@ -2063,11 +2017,11 @@ _Create a superclass and move the common features to the superclass_
 		getName()
 		getId
 	}
-	
+
 ```
 to
 ```java
-	
+
 	Party{
 		getAnnualCost()
 		getName()
@@ -2081,14 +2035,14 @@ to
 		getId
 	}
 
-```	
+```
 **Motivation**	 
 When two classes that do similar things in the same way or similar things in different ways.
 ##63 Extract Interface
 Several clients use the same subset of a class's interface, or two classes have part of their interfaces in common.  
 _Extract the subset into an interface_  
 ```java
-	
+
 	Employee {
 		getRate()
 		hasSpecialSkill()
@@ -2109,7 +2063,7 @@ to
 		getName()
 		getDepartment()
 	}
-**Motivation**	
+**Motivation**
 
 * If only a particular subset of a class's responsibilities is used by a group of clients.
 * If a class needs to work with any class that can handle certain requests.
@@ -2119,13 +2073,13 @@ to
 A superclass and subclass are not very different.   
 _Merge them together_
 ```java
-	
+
 	Employee{	}
 	Salesman extends Employee{	}
 ```
 to
 ```java
-	
+
 	Employee{	}
 ```		
 **Motivation**	 
@@ -2134,7 +2088,7 @@ When a subclass that isn't adding any value.
 You have two methods in subclasses that perform similar steps in the same order, yet the steps are different.
 _Get the steps into methods with the same signature, so that the original methods become the same. Then you can pull them up_
 ```java
-	
+
 	Site{ 	
 	}
 	ResidentialSite extends Site{
@@ -2146,7 +2100,7 @@ _Get the steps into methods with the same signature, so that the original method
 ```
 to
 ```java
-	
+
 	Site{ 	
 		getBillableAmount()
 		getBaseAmount()
@@ -2154,16 +2108,16 @@ to
 	}
 	ResidentialSite extends Site{
 		getBaseAmount()
-		getTaxAmount()	
+		getTaxAmount()
 	}
 	LifelineSite extends Site{
 		getBaseAmount()
 		getTaxAmount()
 	}
-```	
-**Motivation**	
+```
+**Motivation**
 
-* Use Inheritance with polymorphism  for eliminating duplicate behavior that is slightly different. 
+* Use Inheritance with polymorphism  for eliminating duplicate behavior that is slightly different.
 * When there are two similar methods in a subclass, bring them together in a superclass.
 * [Template Method](https://www.wikiwand.com/en/Template_method_pattern)[[Gang of Four]](https://www.wikiwand.com/en/Design_Patterns)
 
@@ -2171,18 +2125,18 @@ to
 A subclass uses only part of a superclasses interface or does not want to inherit data.  
 _Create a field for the superclass, adjust methods to delegate to the superclass, and remove the subclassing_
 ```java
-	
+
 	Vector{
 		isEmpty()
 	}
 
 	Stack extends Vector {
 	}
-	
+
 ```
 to
 ```java
-	
+
 	Vector {
 		isEmpty()
 	}
@@ -2194,10 +2148,10 @@ to
 		}
 	}
 
-```	
-**Motivation**	
+```
+**Motivation**
 
-* Using delegation makes  clear that you are making only partial use of the delegated class. 
+* Using delegation makes  clear that you are making only partial use of the delegated class.
 * You control which aspects of the interface to take and which to ignore.
 
 Mechanics
@@ -2205,7 +2159,7 @@ Mechanics
 You're using delegation and are often writing many simple delegations for the entire interface.   
 _Make the delegating class a subclass of the delegate_
 ```java
-	
+
 	Person {
 		getName()
 	}
@@ -2219,21 +2173,21 @@ _Make the delegating class a subclass of the delegate_
 ```
 to
 ```java
-	
+
 	Person{
 		getName()
 	}
 	Employee extends Person{
 	}
 
-```	
+```
 **Motivation**	 
 
 * If you are using all the methods of the delegate.
 * If you aren't using all the methods of the class to which you are delegating, you shouldn't use it.
 * Beware of is that in which the delegate is shared by more than one object and is mutable. Data sharing is a responsibility that cannot be transferred back to inheritance.
 
-#12 Big Refactorings
+#12 BIG REFACTORINGS
 ##68 Tease Apart Inheritance
 You have an inheritance hierarchy that is doing two jobs at once.   
 _Create two hierarchies and use delegation to invoke one from the other_
@@ -2247,7 +2201,7 @@ _Create two hierarchies and use delegation to invoke one from the other_
 ```
 to
 ```java
-	
+
 	Deal{
 		PresentationStyle presettationStyle;
 	}
@@ -2258,14 +2212,14 @@ to
 	TabularPresentationStyle extends PresentationStyle{}
 	SinglePresentationStyle extends PresentationStyle{}
 
-```	
-**Motivation**	
+```
+**Motivation**
 
 * Tangled inheritance leads to code duplication.
 * If every class at a certain level in the hierarchy has subclasses that begin with the same adjective, you probably are doing two jobs with one hierarchy.
 
 **Mechanics Note**   
-Identify the different jobs being done by the hierarchy. Create a two-dimensional(or x-dimensional) grid and label the axes with the different jobs. 
+Identify the different jobs being done by the hierarchy. Create a two-dimensional(or x-dimensional) grid and label the axes with the different jobs.
 
 | Deal         | Active Deal | Passive Deal |
 |--------------|-------------|--------------|
@@ -2295,7 +2249,7 @@ to
 		getTaxes()
 	}
 ```
-**Motivation**	
+**Motivation**
 Use OOP (at least in JAVA)
 
 ##70 Separate Domain from Presentation
@@ -2312,22 +2266,22 @@ to
 		Order order;
 }
 ```
-**Motivation**	
+**Motivation**
 
 * Separates two complicated parts of the program into pieces that are easier to modify.
-* Allows multiple presentations of the same business logic. 
+* Allows multiple presentations of the same business logic.
 * Its worth is proved
 
 ##71 Extract Hierarchy
 You have a class that is doing too much work, at least in part through many conditional statements.   
 _Create a hierarchy of classes in which each subclass represents a special case_
 ```java
-	
+
 	BillingScheme{}
 ```
 to
 ```java
-	
+
 	BillingScheme{}
 	BusinessBillingScheme extends BillingScheme{}
 	ResidentialBillingScheme extends BillingScheme{}
