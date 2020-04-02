@@ -920,15 +920,18 @@ _Turn it into a value object_
 to
 ```java
 	
-	// Add `equals` and `hashCode` 
-	public boolean equals(Object arg) {
-	 if (! (arg instanceof Currency)) return false;
-	 Currency other = (Currency) arg;
-	 return (_code.equals(other._code));
-	}
+	// Add `equals` and `hashCode` to the Currency class 
+	class Currency{ 
+		...
+		public boolean equals(Object arg) {
+	 		if (! (arg instanceof Currency)) return false;
+	 		Currency other = (Currency) arg;
+			return (_code.equals(other._code));
+		}
 
-	public int hashCode() {
- 		return _code.hashCode();
+		public int hashCode() {
+ 			return _code.hashCode();
+ 		}
  	}
 
  	// Now you can do
