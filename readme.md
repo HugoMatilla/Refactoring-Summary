@@ -919,7 +919,19 @@ _Turn it into a value object_
 ```
 to
 ```java
+	
+	// Add `equals` and `hashCode` 
+	public boolean equals(Object arg) {
+	 if (! (arg instanceof Currency)) return false;
+	 Currency other = (Currency) arg;
+	 return (_code.equals(other._code));
+	}
 
+	public int hashCode() {
+ 		return _code.hashCode();
+ 	}
+
+ 	// Now you can do
 	new Currency("USD").equals(new Currency("USD")) // now returns true
 ```
 **Motivation**  
