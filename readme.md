@@ -9,28 +9,28 @@ Contributions: Issues, comments and pull requests are super welcome :smiley:
 # 1. TABLE OF CONTENT
 - [1. TABLE OF CONTENT](#1-table-of-content)
 - [3. BAD SMELLS IN CODE](#3-bad-smells-in-code)
-	- [1. Duplicated code](#1-duplicated-code)
-	- [2. Long Method](#2-long-method)
-	- [3. Large Classes](#3-large-classes)
-	- [4. Long Parameter List](#4-long-parameter-list)
-	- [5. Divergent Change](#5-divergent-change)
-	- [6. Shotgun Surgery](#6-shotgun-surgery)
-	- [7. Feature Envy](#7-feature-envy)
-	- [8. Data Clumps](#8-data-clumps)
-	- [9. Primitive Obsession](#9-primitive-obsession)
-	- [10. Switch Statements](#10-switch-statements)
-	- [11. Parallel Inheritance Hierarchies](#11-parallel-inheritance-hierarchies)
-	- [12. Lazy Class](#12-lazy-class)
-	- [13. Speculative Generality](#13-speculative-generality)
-	- [14. Temporary Field](#14-temporary-field)
-	- [15. Message Chain](#15-message-chain)
-	- [16. Middle Man](#16-middle-man)
-	- [17. Inappropriate Intimacy](#17-inappropriate-intimacy)
-	- [18. Alternative Classes with Different Interfaces](#18-alternative-classes-with-different-interfaces)
-	- [19. Incomplete Library Class](#19-incomplete-library-class)
-	- [20. Data Class](#20-data-class)
-	- [21. Refused Bequest](#21-refused-bequest)
-	- [22. Comments](#22-comments)
+		- [1. Duplicated code](#1-duplicated-code)
+		- [2. Long Method](#2-long-method)
+		- [3. Large Classes](#3-large-classes)
+		- [4. Long Parameter List](#4-long-parameter-list)
+		- [5. Divergent Change](#5-divergent-change)
+		- [6. Shotgun Surgery](#6-shotgun-surgery)
+		- [7. Feature Envy](#7-feature-envy)
+		- [8. Data Clumps](#8-data-clumps)
+		- [9. Primitive Obsession](#9-primitive-obsession)
+		- [10. Switch Statements](#10-switch-statements)
+		- [11. Parallel Inheritance Hierarchies](#11-parallel-inheritance-hierarchies)
+		- [12. Lazy Class](#12-lazy-class)
+		- [13. Speculative Generality](#13-speculative-generality)
+		- [14. Temporary Field](#14-temporary-field)
+		- [15. Message Chain](#15-message-chain)
+		- [16. Middle Man](#16-middle-man)
+		- [17. Inappropriate Intimacy](#17-inappropriate-intimacy)
+		- [18. Alternative Classes with Different Interfaces](#18-alternative-classes-with-different-interfaces)
+		- [19. Incomplete Library Class](#19-incomplete-library-class)
+		- [20. Data Class](#20-data-class)
+		- [21. Refused Bequest](#21-refused-bequest)
+		- [22. Comments](#22-comments)
 - [6. COMPOSING METHODS](#6-composing-methods)
 	- [1. Extract Method](#1-extract-method)
 	- [2. Inline Method](#2-inline-method)
@@ -101,8 +101,6 @@ Contributions: Issues, comments and pull requests are super welcome :smiley:
 	- [61. Extract Subclass](#61-extract-subclass)
 	- [62. Extract Superclass](#62-extract-superclass)
 	- [63. Extract Interface](#63-extract-interface)
-	- [64. Collapse Hierarchy](#64-collapse-hierarchy)
-	- [65. Form Template Method](#65-form-template-method)
 	- [66. Replace Inheritance with Delegation](#66-replace-inheritance-with-delegation)
 	- [67. Replace Delegation with Inheritance](#67-replace-delegation-with-inheritance)
 - [12. BIG REFACTORINGS](#12-big-refactorings)
@@ -117,7 +115,7 @@ Contributions: Issues, comments and pull requests are super welcome :smiley:
 ### 1. Duplicated code
 Same code structure in more than one place.
 ### 2. Long Method
-The longer a procedure is the more difficult is to understand.
+The longer a procedure is, the more difficult it is to understand.
 ### 3. Large Classes
 When a class is trying to do too much, duplicated code cannot be far behind.
 ### 4. Long Parameter List
@@ -147,9 +145,9 @@ When a client asks one object for another object, which the client then asks for
 ### 16. Middle Man
 When an object delegates much of its functionality.
 ### 17. Inappropriate Intimacy
-When classes access to much to another classes.
+When classes access too much from another classes.
 ### 18. Alternative Classes with Different Interfaces
-Classes with methods that look to similar.
+Classes with methods that look too similar.
 ### 19. Incomplete Library Class
 When we need extra features in libraries.
 ### 20. Data Class
